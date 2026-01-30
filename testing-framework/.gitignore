@@ -1,0 +1,25 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Generated test data
+golden_datasets/
+
+# Test outputs
+test_report.txt
+*.log
+
+# Compiled COBOL executable
+cobol_runner/cbtrn02c
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Virtual environments
+venv/
+.env/
