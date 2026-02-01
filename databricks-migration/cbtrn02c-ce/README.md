@@ -12,6 +12,139 @@ CBTRN02C is a batch program that:
 5. Updates transaction category balances
 6. Writes rejected transactions with reason codes
 
+## Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        CBTRN02C - Post Daily Transactions                       │
+│                         (PySpark / Databricks Migration)                        │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+                              ┌─────────────────┐
+                              │  Shell Script   │
+                              │ run_cbtrn02c.sh │
+                              │                 │
+                              │ --batch-id      │
+                              │ --database      │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+                              ┌─────────────────┐
+                              │  spark-submit   │
+                              │       or        │
+                              │ Notebook %run   │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                            cbtrn02c_job.py (PySpark)                             │
+│                                                                                  │
+│  ┌────────────────────────────────────────────────────────────────────────────┐  │
+│  │                         1. READ DAILY TRANSACTIONS                         │  │
+│  │                                                                            │  │
+│  │   SELECT * FROM dalytran WHERE batch_id = :batch_id                        │  │
+│  └────────────────────────────────────────────────────────────────────────────┘  │
+│                                       │                                          │
+│                                       ▼                                          │
+│  ┌────────────────────────────────────────────────────────────────────────────┐  │
+│  │                         2. VALIDATION PIPELINE                             │  │
+│  │                                                                            │  │
+│  │   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                 │  │
+│  │   │  CARD_XREF   │    │   ACCOUNTS   │    │   Window     │                 │  │
+│  │   │    Lookup    │───▶│    Lookup    │───▶│  Functions   │                 │  │
+│  │   │              │    │              │    │  (Running    │                 │  │
+│  │   │ Code 100:    │    │ Code 101:    │    │   Balance)   │                 │  │
+│  │   │ Invalid Card │    │ Acct Not     │    │              │                 │  │
+│  │   └──────────────┘    │ Found        │    │ Code 102:    │                 │  │
+│  │                       │              │    │ Overlimit    │                 │  │
+│  │                       │ Code 103:    │    │              │                 │  │
+│  │                       │ Expired      │    └──────────────┘                 │  │
+│  │                       └──────────────┘                                     │  │
+│  └────────────────────────────────────────────────────────────────────────────┘  │
+│                                       │                                          │
+│                    ┌──────────────────┴──────────────────┐                       │
+│                    │                                     │                       │
+│                    ▼                                     ▼                       │
+│  ┌─────────────────────────────────┐   ┌─────────────────────────────────────┐   │
+│  │      VALID TRANSACTIONS         │   │      REJECTED TRANSACTIONS          │   │
+│  │                                 │   │                                     │   │
+│  │  3a. MERGE INTO transactions    │   │  3b. INSERT INTO transaction_rejects│   │
+│  │  3c. MERGE INTO accounts        │   │      - tran_id                      │   │
+│  │      (update balances)          │   │      - reject_reason_code           │   │
+│  │  3d. MERGE INTO tran_cat_balance│   │      - reject_reason_desc           │   │
+│  └─────────────────────────────────┘   └─────────────────────────────────────┘   │
+│                                                                                  │
+│  ┌────────────────────────────────────────────────────────────────────────────┐  │
+│  │                         4. RETURN STATISTICS                               │  │
+│  │                                                                            │  │
+│  │   { "transactions_read": N, "transactions_written": M,                     │  │
+│  │     "transactions_rejected": R, "return_code": 0|4|1 }                     │  │
+│  └────────────────────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────────────┘
+
+                              DATA FLOW DIAGRAM
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│   INPUT TABLES                    REFERENCE TABLES              OUTPUT TABLES   │
+│   ────────────                    ────────────────              ─────────────   │
+│                                                                                 │
+│   ┌───────────┐                   ┌───────────────┐            ┌─────────────┐  │
+│   │  DALYTRAN │                   │   CARD_XREF   │            │TRANSACTIONS │  │
+│   │  (Bronze) │                   │               │            │   (Gold)    │  │
+│   │           │                   │ card_num (PK) │            │             │  │
+│   │ Daily     │──────┬───────────▶│ acct_id (FK)  │            │ Posted      │  │
+│   │ Batch     │      │            └───────────────┘            │ Records     │  │
+│   │ Input     │      │                    │                    └─────────────┘  │
+│   └───────────┘      │                    │                           ▲         │
+│                      │                    ▼                           │         │
+│                      │            ┌───────────────┐                   │         │
+│                      │            │   ACCOUNTS    │───────────────────┤         │
+│                      │            │               │   (balance        │         │
+│                      │            │ acct_id (PK)  │    updates)       │         │
+│                      │            │ credit_limit  │                   │         │
+│                      │            │ curr_bal      │            ┌─────────────┐  │
+│                      │            │ expiration_dt │            │TRAN_CAT_BAL │  │
+│                      │            └───────────────┘            │   (Gold)    │  │
+│                      │                                         │             │  │
+│                      │                                         │ Category    │  │
+│                      │                                         │ Balances    │  │
+│                      │                                         └─────────────┘  │
+│                      │                                                          │
+│                      │                                         ┌─────────────┐  │
+│                      └────────────────────────────────────────▶│  REJECTS    │  │
+│                           (invalid transactions)               │   (Gold)    │  │
+│                                                                │             │  │
+│                                                                │ Code 100-103│  │
+│                                                                └─────────────┘  │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+                         SEQUENTIAL PROCESSING LOGIC
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│  Window Function for Running Balance (matches COBOL sequential behavior):      │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  window_spec = Window.partitionBy("acct_id")                            │    │
+│  │                      .orderBy("tran_id")                                │    │
+│  │                      .rowsBetween(unboundedPreceding, currentRow)       │    │
+│  │                                                                         │    │
+│  │  running_balance = curr_cyc_credit - curr_cyc_debit + SUM(tran_amt)     │    │
+│  │                                                                         │    │
+│  │  IF running_balance > credit_limit THEN reject (code 102)               │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                 │
+│  Example: Account A001 with credit_limit = $1000, curr_bal = $800               │
+│                                                                                 │
+│  Transaction 1: -$100  → running_bal = $900  → PASS (under limit)               │
+│  Transaction 2: -$150  → running_bal = $1050 → REJECT (overlimit)               │
+│  Transaction 3: -$50   → running_bal = $1100 → REJECT (overlimit)               │
+│                                                                                 │
+│  Note: Each transaction's result affects subsequent validations                 │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ## Files
 
 | File | Description |
