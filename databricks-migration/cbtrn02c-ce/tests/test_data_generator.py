@@ -184,10 +184,10 @@ VALUES ('{xref.card_num}', '{xref.acct_id}', '{xref.cust_id}');"""
         return {
             'tran_id': tran.tran_id,
             'tran_type_cd': tran.tran_type_cd,
-            'tran_cat_cd': tran.tran_cat_cd,
+            'tran_cat_cd': int(tran.tran_cat_cd),
             'tran_source': tran.tran_source,
             'tran_desc': tran.tran_desc,
-            'tran_amt': float(tran.tran_amt),
+            'tran_amt': Decimal(str(tran.tran_amt)),
             'merchant_id': tran.merchant_id,
             'merchant_name': tran.merchant_name,
             'merchant_city': tran.merchant_city,

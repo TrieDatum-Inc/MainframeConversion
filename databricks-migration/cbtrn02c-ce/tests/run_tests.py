@@ -220,8 +220,24 @@ class CBTRN02CTestRunner:
                     MERGE INTO {self.database}.accounts AS target
                     USING temp_accounts AS source
                     ON target.acct_id = source.acct_id
-                    WHEN MATCHED THEN UPDATE SET *
-                    WHEN NOT MATCHED THEN INSERT *
+                    WHEN MATCHED THEN UPDATE SET
+                        target.active_status = source.active_status,
+                        target.curr_bal = source.curr_bal,
+                        target.credit_limit = source.credit_limit,
+                        target.cash_credit_limit = source.cash_credit_limit,
+                        target.open_date = source.open_date,
+                        target.expiration_date = source.expiration_date,
+                        target.reissue_date = source.reissue_date,
+                        target.curr_cyc_credit = source.curr_cyc_credit,
+                        target.curr_cyc_debit = source.curr_cyc_debit,
+                        target.group_id = source.group_id
+                    WHEN NOT MATCHED THEN INSERT (
+                        acct_id, active_status, curr_bal, credit_limit, cash_credit_limit,
+                        open_date, expiration_date, reissue_date, curr_cyc_credit, curr_cyc_debit, group_id
+                    ) VALUES (
+                        source.acct_id, source.active_status, source.curr_bal, source.credit_limit, source.cash_credit_limit,
+                        source.open_date, source.expiration_date, source.reissue_date, source.curr_cyc_credit, source.curr_cyc_debit, source.group_id
+                    )
                 """)
         
         # Load card_xref (using MERGE for upsert)
@@ -239,11 +255,27 @@ class CBTRN02CTestRunner:
                     WHEN NOT MATCHED THEN INSERT *
                 """)
         
-        # Load transactions
+        # Load transactions with explicit schema to avoid type inference issues
         if test_case.transactions:
             tran_data = self.generator.generate_pyspark_test_data(test_case)['transactions']
             if tran_data:
-                tran_df = self.spark.createDataFrame(tran_data)
+                from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DecimalType, LongType
+                tran_schema = StructType([
+                    StructField("tran_id", StringType(), True),
+                    StructField("tran_type_cd", StringType(), True),
+                    StructField("tran_cat_cd", IntegerType(), True),
+                    StructField("tran_source", StringType(), True),
+                    StructField("tran_desc", StringType(), True),
+                    StructField("tran_amt", DecimalType(11, 2), True),
+                    StructField("merchant_id", LongType(), True),
+                    StructField("merchant_name", StringType(), True),
+                    StructField("merchant_city", StringType(), True),
+                    StructField("merchant_zip", StringType(), True),
+                    StructField("card_num", StringType(), True),
+                    StructField("orig_ts", StringType(), True),
+                    StructField("batch_id", StringType(), True)
+                ])
+                tran_df = self.spark.createDataFrame(tran_data, schema=tran_schema)
                 tran_df = tran_df.withColumn("ingestion_ts", F.current_timestamp())
                 tran_df = tran_df.withColumn("proc_ts", F.lit(None).cast("string"))
                 tran_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.dalytran")
