@@ -92,8 +92,12 @@ class CBTRN02CTestRunner:
                     .appName("CBTRN02C_TestRunner") \
                     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
                     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+                    .config("spark.sql.shuffle.partitions", "4") \
+                    .config("spark.default.parallelism", "4") \
+                    .config("spark.sql.adaptive.enabled", "false") \
                     .getOrCreate()
                 print(f"Spark session initialized: {self.spark.version}")
+                print(f"Optimized for testing: shuffle.partitions=4, parallelism=4")
             except Exception as e:
                 print(f"ERROR: Could not initialize Spark session: {e}")
                 print("Please run this in a Databricks notebook or with PySpark installed.")
@@ -200,85 +204,72 @@ class CBTRN02CTestRunner:
 
         print("Test tables created successfully")
 
+    def clear_test_tables(self):
+        """Clear all test tables for a fresh test run. Much faster than per-row DELETE WHERE."""
+        # DELETE without WHERE is the Delta Lake equivalent of TRUNCATE
+        # This is much faster than DELETE WHERE batch_id = 'xxx' for test isolation
+        self.spark.sql(f"DELETE FROM {self.database}.dalytran")
+        self.spark.sql(f"DELETE FROM {self.database}.transactions")
+        self.spark.sql(f"DELETE FROM {self.database}.transaction_rejects")
+        self.spark.sql(f"DELETE FROM {self.database}.tran_cat_balance")
+        self.spark.sql(f"DELETE FROM {self.database}.accounts")
+        self.spark.sql(f"DELETE FROM {self.database}.card_xref")
+
     def load_test_data(self, test_case: TestCase):
         """Load test data for a specific test case."""
         from pyspark.sql import functions as F
+        from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DecimalType, LongType
 
-        # Clear previous test data for this batch
-        self.spark.sql(f"DELETE FROM {self.database}.dalytran WHERE batch_id = '{test_case.test_id}'")
-        self.spark.sql(f"DELETE FROM {self.database}.transactions WHERE batch_id = '{test_case.test_id}'")
-        self.spark.sql(f"DELETE FROM {self.database}.transaction_rejects WHERE batch_id = '{test_case.test_id}'")
+        # Clear all tables for test isolation (TRUNCATE is much faster than DELETE WHERE)
+        self.clear_test_tables()
 
-        # Load accounts (using MERGE for upsert)
-        if test_case.accounts:
-            accounts_data = self.generator.generate_pyspark_test_data(test_case)['accounts']
-            if accounts_data:
-                accounts_df = self.spark.createDataFrame(accounts_data)
-                accounts_df.createOrReplaceTempView("temp_accounts")
+        # Generate test data once (avoid multiple calls to generate_pyspark_test_data)
+        test_data = self.generator.generate_pyspark_test_data(test_case)
 
-                self.spark.sql(f"""
-                    MERGE INTO {self.database}.accounts AS target
-                    USING temp_accounts AS source
-                    ON target.acct_id = source.acct_id
-                    WHEN MATCHED THEN UPDATE SET
-                        target.active_status = source.active_status,
-                        target.curr_bal = source.curr_bal,
-                        target.credit_limit = source.credit_limit,
-                        target.cash_credit_limit = source.cash_credit_limit,
-                        target.open_date = source.open_date,
-                        target.expiration_date = source.expiration_date,
-                        target.reissue_date = source.reissue_date,
-                        target.curr_cyc_credit = source.curr_cyc_credit,
-                        target.curr_cyc_debit = source.curr_cyc_debit,
-                        target.group_id = source.group_id
-                    WHEN NOT MATCHED THEN INSERT (
-                        acct_id, active_status, curr_bal, credit_limit, cash_credit_limit,
-                        open_date, expiration_date, reissue_date, curr_cyc_credit, curr_cyc_debit, group_id
-                    ) VALUES (
-                        source.acct_id, source.active_status, source.curr_bal, source.credit_limit, source.cash_credit_limit,
-                        source.open_date, source.expiration_date, source.reissue_date, source.curr_cyc_credit, source.curr_cyc_debit, source.group_id
-                    )
-                """)
+        # Load accounts with explicit schema to match table (DecimalType(11, 2))
+        if test_case.accounts and test_data['accounts']:
+            accounts_schema = StructType([
+                StructField("acct_id", StringType(), True),
+                StructField("active_status", StringType(), True),
+                StructField("curr_bal", DecimalType(11, 2), True),
+                StructField("credit_limit", DecimalType(11, 2), True),
+                StructField("cash_credit_limit", DecimalType(11, 2), True),
+                StructField("open_date", StringType(), True),
+                StructField("expiration_date", StringType(), True),
+                StructField("reissue_date", StringType(), True),
+                StructField("curr_cyc_credit", DecimalType(11, 2), True),
+                StructField("curr_cyc_debit", DecimalType(11, 2), True),
+                StructField("group_id", StringType(), True)
+            ])
+            accounts_df = self.spark.createDataFrame(test_data['accounts'], schema=accounts_schema)
+            accounts_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.accounts")
 
-        # Load card_xref (using MERGE for upsert)
-        if test_case.card_xrefs:
-            xref_data = self.generator.generate_pyspark_test_data(test_case)['card_xrefs']
-            if xref_data:
-                xref_df = self.spark.createDataFrame(xref_data)
-                xref_df.createOrReplaceTempView("temp_card_xref")
-
-                self.spark.sql(f"""
-                    MERGE INTO {self.database}.card_xref AS target
-                    USING temp_card_xref AS source
-                    ON target.card_num = source.card_num
-                    WHEN MATCHED THEN UPDATE SET *
-                    WHEN NOT MATCHED THEN INSERT *
-                """)
+        # Load card_xref (simple INSERT after DELETE - no MERGE needed)
+        if test_case.card_xrefs and test_data['card_xrefs']:
+            xref_df = self.spark.createDataFrame(test_data['card_xrefs'])
+            xref_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.card_xref")
 
         # Load transactions with explicit schema to avoid type inference issues
-        if test_case.transactions:
-            tran_data = self.generator.generate_pyspark_test_data(test_case)['transactions']
-            if tran_data:
-                from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DecimalType, LongType
-                tran_schema = StructType([
-                    StructField("tran_id", StringType(), True),
-                    StructField("tran_type_cd", StringType(), True),
-                    StructField("tran_cat_cd", IntegerType(), True),
-                    StructField("tran_source", StringType(), True),
-                    StructField("tran_desc", StringType(), True),
-                    StructField("tran_amt", DecimalType(11, 2), True),
-                    StructField("merchant_id", LongType(), True),
-                    StructField("merchant_name", StringType(), True),
-                    StructField("merchant_city", StringType(), True),
-                    StructField("merchant_zip", StringType(), True),
-                    StructField("card_num", StringType(), True),
-                    StructField("orig_ts", StringType(), True),
-                    StructField("batch_id", StringType(), True)
-                ])
-                tran_df = self.spark.createDataFrame(tran_data, schema=tran_schema)
-                tran_df = tran_df.withColumn("ingestion_ts", F.current_timestamp())
-                tran_df = tran_df.withColumn("proc_ts", F.lit(None).cast("string"))
-                tran_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.dalytran")
+        if test_case.transactions and test_data['transactions']:
+            tran_schema = StructType([
+                StructField("tran_id", StringType(), True),
+                StructField("tran_type_cd", StringType(), True),
+                StructField("tran_cat_cd", IntegerType(), True),
+                StructField("tran_source", StringType(), True),
+                StructField("tran_desc", StringType(), True),
+                StructField("tran_amt", DecimalType(11, 2), True),
+                StructField("merchant_id", LongType(), True),
+                StructField("merchant_name", StringType(), True),
+                StructField("merchant_city", StringType(), True),
+                StructField("merchant_zip", StringType(), True),
+                StructField("card_num", StringType(), True),
+                StructField("orig_ts", StringType(), True),
+                StructField("batch_id", StringType(), True)
+            ])
+            tran_df = self.spark.createDataFrame(test_data['transactions'], schema=tran_schema)
+            tran_df = tran_df.withColumn("ingestion_ts", F.current_timestamp())
+            tran_df = tran_df.withColumn("proc_ts", F.lit(None).cast("string"))
+            tran_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.dalytran")
 
     def run_test(self, test_case: TestCase) -> TestResult:
         """Run a single test case and return the result."""
