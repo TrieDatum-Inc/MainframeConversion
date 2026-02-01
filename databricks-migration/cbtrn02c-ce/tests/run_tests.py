@@ -10,13 +10,13 @@ It can be run:
 
 Usage:
     python run_tests.py [--test-id TEST_ID] [--category CATEGORY] [--database DATABASE]
-    
+
     # Run all tests
     python run_tests.py
-    
+
     # Run specific test
     python run_tests.py --test-id TC_100_INVALID_CARD
-    
+
     # Run tests by category
     python run_tests.py --category "Validation Rules"
 """
@@ -59,20 +59,20 @@ class TestResult:
 class CBTRN02CTestRunner:
     """
     Test runner for CBTRN02C PySpark migration.
-    
+
     This runner:
     1. Sets up test data for each test case
     2. Executes the CBTRN02C job
     3. Verifies results against expected outcomes
     4. Generates a test report
     """
-    
+
     def __init__(self, spark=None, database: str = "carddemo_test"):
         self.spark = spark
         self.database = database
         self.generator = TestDataGenerator(database)
         self.results: List[TestResult] = []
-        
+
         # Import job class
         try:
             from cbtrn02c_job import CBTRN02CJob
@@ -82,7 +82,7 @@ class CBTRN02CTestRunner:
             sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             from cbtrn02c_job import CBTRN02CJob
             self.job_class = CBTRN02CJob
-    
+
     def setup_spark(self):
         """Initialize Spark session if not provided."""
         if self.spark is None:
@@ -98,15 +98,15 @@ class CBTRN02CTestRunner:
                 print(f"ERROR: Could not initialize Spark session: {e}")
                 print("Please run this in a Databricks notebook or with PySpark installed.")
                 sys.exit(1)
-    
+
     def setup_test_tables(self):
         """Create test database and tables if they don't exist."""
         print(f"\nSetting up test database: {self.database}")
-        
+
         # Create database
         self.spark.sql(f"CREATE DATABASE IF NOT EXISTS {self.database}")
         self.spark.sql(f"USE {self.database}")
-        
+
         # Create tables (simplified schema for testing)
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.accounts (
@@ -125,7 +125,7 @@ class CBTRN02CTestRunner:
                 last_updated_batch_id STRING
             ) USING DELTA
         """)
-        
+
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.card_xref (
                 card_num STRING,
@@ -133,7 +133,7 @@ class CBTRN02CTestRunner:
                 cust_id STRING
             ) USING DELTA
         """)
-        
+
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.dalytran (
                 tran_id STRING,
@@ -153,7 +153,7 @@ class CBTRN02CTestRunner:
                 ingestion_ts TIMESTAMP
             ) USING DELTA
         """)
-        
+
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.transactions (
                 tran_id STRING,
@@ -173,7 +173,7 @@ class CBTRN02CTestRunner:
                 created_ts TIMESTAMP
             ) USING DELTA
         """)
-        
+
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.transaction_rejects (
                 tran_id STRING,
@@ -186,7 +186,7 @@ class CBTRN02CTestRunner:
                 rejected_ts TIMESTAMP
             ) USING DELTA
         """)
-        
+
         self.spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {self.database}.tran_cat_balance (
                 acct_id STRING,
@@ -197,25 +197,25 @@ class CBTRN02CTestRunner:
                 last_updated_batch_id STRING
             ) USING DELTA
         """)
-        
+
         print("Test tables created successfully")
-    
+
     def load_test_data(self, test_case: TestCase):
         """Load test data for a specific test case."""
         from pyspark.sql import functions as F
-        
+
         # Clear previous test data for this batch
         self.spark.sql(f"DELETE FROM {self.database}.dalytran WHERE batch_id = '{test_case.test_id}'")
         self.spark.sql(f"DELETE FROM {self.database}.transactions WHERE batch_id = '{test_case.test_id}'")
         self.spark.sql(f"DELETE FROM {self.database}.transaction_rejects WHERE batch_id = '{test_case.test_id}'")
-        
+
         # Load accounts (using MERGE for upsert)
         if test_case.accounts:
             accounts_data = self.generator.generate_pyspark_test_data(test_case)['accounts']
             if accounts_data:
                 accounts_df = self.spark.createDataFrame(accounts_data)
                 accounts_df.createOrReplaceTempView("temp_accounts")
-                
+
                 self.spark.sql(f"""
                     MERGE INTO {self.database}.accounts AS target
                     USING temp_accounts AS source
@@ -239,14 +239,14 @@ class CBTRN02CTestRunner:
                         source.open_date, source.expiration_date, source.reissue_date, source.curr_cyc_credit, source.curr_cyc_debit, source.group_id
                     )
                 """)
-        
+
         # Load card_xref (using MERGE for upsert)
         if test_case.card_xrefs:
             xref_data = self.generator.generate_pyspark_test_data(test_case)['card_xrefs']
             if xref_data:
                 xref_df = self.spark.createDataFrame(xref_data)
                 xref_df.createOrReplaceTempView("temp_card_xref")
-                
+
                 self.spark.sql(f"""
                     MERGE INTO {self.database}.card_xref AS target
                     USING temp_card_xref AS source
@@ -254,7 +254,7 @@ class CBTRN02CTestRunner:
                     WHEN MATCHED THEN UPDATE SET *
                     WHEN NOT MATCHED THEN INSERT *
                 """)
-        
+
         # Load transactions with explicit schema to avoid type inference issues
         if test_case.transactions:
             tran_data = self.generator.generate_pyspark_test_data(test_case)['transactions']
@@ -279,27 +279,27 @@ class CBTRN02CTestRunner:
                 tran_df = tran_df.withColumn("ingestion_ts", F.current_timestamp())
                 tran_df = tran_df.withColumn("proc_ts", F.lit(None).cast("string"))
                 tran_df.write.format("delta").mode("append").saveAsTable(f"{self.database}.dalytran")
-    
+
     def run_test(self, test_case: TestCase) -> TestResult:
         """Run a single test case and return the result."""
         import time
-        
+
         print(f"\n{'='*60}")
         print(f"Running: {test_case.test_id}")
         print(f"Description: {test_case.description}")
         print(f"{'='*60}")
-        
+
         start_time = time.time()
         error_message = None
         actual_read = 0
         actual_posted = 0
         actual_rejected = 0
         actual_reject_codes = []
-        
+
         try:
             # Load test data
             self.load_test_data(test_case)
-            
+
             # Run the job
             job = self.job_class(
                 spark=self.spark,
@@ -307,27 +307,27 @@ class CBTRN02CTestRunner:
                 batch_id=test_case.test_id
             )
             stats = job.run()
-            
+
             # Get actual results
             actual_read = stats["records_read"]
             actual_posted = stats["records_written"]
             actual_rejected = stats["records_rejected"]
-            
+
             # Get actual reject codes
             rejects_df = self.spark.sql(f"""
-                SELECT reject_reason_code 
-                FROM {self.database}.transaction_rejects 
+                SELECT reject_reason_code
+                FROM {self.database}.transaction_rejects
                 WHERE batch_id = '{test_case.test_id}'
                 ORDER BY tran_id
             """)
             actual_reject_codes = [row.reject_reason_code for row in rejects_df.collect()]
-            
+
         except Exception as e:
             error_message = str(e)
             print(f"ERROR: {error_message}")
-        
+
         execution_time = (time.time() - start_time) * 1000
-        
+
         # Determine if test passed
         passed = (
             error_message is None and
@@ -336,7 +336,7 @@ class CBTRN02CTestRunner:
             actual_rejected == test_case.expected.transactions_rejected and
             actual_reject_codes == test_case.expected.reject_codes
         )
-        
+
         result = TestResult(
             test_id=test_case.test_id,
             description=test_case.description,
@@ -353,7 +353,7 @@ class CBTRN02CTestRunner:
             error_message=error_message,
             execution_time_ms=execution_time
         )
-        
+
         # Print result
         status = "PASS" if passed else "FAIL"
         print(f"\nResult: {status}")
@@ -363,40 +363,40 @@ class CBTRN02CTestRunner:
         if test_case.expected.reject_codes:
             print(f"  Reject Codes: Expected={test_case.expected.reject_codes}, Actual={actual_reject_codes}")
         print(f"  Execution Time: {execution_time:.2f}ms")
-        
+
         return result
-    
+
     def run_all_tests(self, test_cases: List[TestCase] = None) -> List[TestResult]:
         """Run all test cases and return results."""
         if test_cases is None:
             test_cases = ALL_TEST_CASES
-        
+
         print("\n" + "=" * 80)
         print("CBTRN02C TEST SUITE")
         print(f"Running {len(test_cases)} test cases")
         print(f"Database: {self.database}")
         print(f"Started: {datetime.now().isoformat()}")
         print("=" * 80)
-        
+
         self.setup_spark()
         self.setup_test_tables()
-        
+
         self.results = []
         for tc in test_cases:
             result = self.run_test(tc)
             self.results.append(result)
-        
+
         return self.results
-    
+
     def generate_report(self) -> str:
         """Generate a test report in markdown format."""
         if not self.results:
             return "No test results available."
-        
+
         passed = sum(1 for r in self.results if r.passed)
         failed = len(self.results) - passed
         pass_rate = (passed / len(self.results)) * 100 if self.results else 0
-        
+
         report = []
         report.append("# CBTRN02C Test Results Report")
         report.append("")
@@ -412,7 +412,7 @@ class CBTRN02CTestRunner:
         report.append(f"| Failed | {failed} |")
         report.append(f"| Pass Rate | {pass_rate:.1f}% |")
         report.append("")
-        
+
         # Results by category
         categories = {}
         for r in self.results:
@@ -422,7 +422,7 @@ class CBTRN02CTestRunner:
                 categories[r.category]['passed'] += 1
             else:
                 categories[r.category]['failed'] += 1
-        
+
         report.append("## Results by Category")
         report.append("")
         report.append("| Category | Passed | Failed | Pass Rate |")
@@ -432,22 +432,22 @@ class CBTRN02CTestRunner:
             rate = (counts['passed'] / total) * 100 if total > 0 else 0
             report.append(f"| {cat} | {counts['passed']} | {counts['failed']} | {rate:.1f}% |")
         report.append("")
-        
+
         # Detailed results
         report.append("## Detailed Results")
         report.append("")
         report.append("| Test ID | Description | Status | Read | Posted | Rejected | Time (ms) |")
         report.append("|---------|-------------|--------|------|--------|----------|-----------|")
-        
+
         for r in self.results:
             status = "PASS" if r.passed else "FAIL"
             read_match = "OK" if r.expected_read == r.actual_read else f"{r.expected_read}/{r.actual_read}"
             posted_match = "OK" if r.expected_posted == r.actual_posted else f"{r.expected_posted}/{r.actual_posted}"
             rejected_match = "OK" if r.expected_rejected == r.actual_rejected else f"{r.expected_rejected}/{r.actual_rejected}"
             report.append(f"| {r.test_id} | {r.description[:40]}... | {status} | {read_match} | {posted_match} | {rejected_match} | {r.execution_time_ms:.0f} |")
-        
+
         report.append("")
-        
+
         # Failed tests details
         failed_tests = [r for r in self.results if not r.passed]
         if failed_tests:
@@ -467,9 +467,9 @@ class CBTRN02CTestRunner:
                 if r.error_message:
                     report.append(f"| Error | - | {r.error_message} |")
                 report.append("")
-        
+
         return "\n".join(report)
-    
+
     def save_report(self, filename: str = "test_report.md"):
         """Save the test report to a file."""
         report = self.generate_report()
@@ -508,9 +508,9 @@ def main():
         action="store_true",
         help="List all available test cases"
     )
-    
+
     args = parser.parse_args()
-    
+
     # List tests if requested
     if args.list:
         print("\nAvailable Test Cases:")
@@ -520,14 +520,14 @@ def main():
             if tc.category not in categories:
                 categories[tc.category] = []
             categories[tc.category].append(tc)
-        
+
         for cat, tests in categories.items():
             print(f"\n{cat}:")
             print("-" * 40)
             for tc in tests:
                 print(f"  {tc.test_id}: {tc.description[:50]}...")
         return
-    
+
     # Determine which tests to run
     test_cases = None
     if args.test_id:
@@ -542,24 +542,24 @@ def main():
         if not test_cases:
             print(f"ERROR: No test cases found for category '{args.category}'")
             sys.exit(1)
-    
+
     # Run tests
-    runner = CBTRN02CTestRunner(database=args.database)
+    runner: CBTRN02CTestRunner = CBTRN02CTestRunner(database=args.database)
     results = runner.run_all_tests(test_cases)
-    
+
     # Generate and save report
     runner.save_report(args.report)
-    
+
     # Print summary
     passed = sum(1 for r in results if r.passed)
     failed = len(results) - passed
-    
+
     print("\n" + "=" * 80)
     print("TEST SUITE COMPLETED")
     print("=" * 80)
     print(f"Total: {len(results)}, Passed: {passed}, Failed: {failed}")
     print(f"Pass Rate: {(passed/len(results)*100) if results else 0:.1f}%")
-    
+
     # Exit with appropriate code
     sys.exit(0 if failed == 0 else 1)
 

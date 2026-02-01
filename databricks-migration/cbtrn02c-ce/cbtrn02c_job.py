@@ -100,18 +100,25 @@ class CBTRN02CJob:
         
         # Step 2: Process transactions sequentially by account
         # This matches COBOL behavior where balance updates affect subsequent validations
-        valid_df, rejects_df = self._process_transactions_sequentially(dalytran_df)
+        valid_df, rejects_df, valid_count, reject_count = self._process_transactions_sequentially(dalytran_df)
+        
+        # IMPORTANT: Collect reject data BEFORE posting transactions
+        # because _post_transactions modifies the accounts table, which can
+        # affect the rejects_df when it's re-evaluated
+        reject_data = None
+        if reject_count > 0:
+            reject_data = rejects_df.select(
+                "tran_id", "card_num", "tran_amt", "orig_ts", "reject_reason_code"
+            ).collect()
         
         # Step 3: Post valid transactions
-        valid_count = valid_df.count() if valid_df else 0
         if valid_count > 0:
             self._post_transactions(valid_df)
             self.records_written = valid_count
         
-        # Step 4: Write rejects
-        reject_count = rejects_df.count() if rejects_df else 0
-        if reject_count > 0:
-            self._write_rejects(rejects_df)
+        # Step 4: Write rejects (using pre-collected data)
+        if reject_count > 0 and reject_data:
+            self._write_rejects_from_data(reject_data)
             self.records_rejected = reject_count
         
         # Step 5: Generate reconciliation report
@@ -219,10 +226,21 @@ class CBTRN02CJob:
         )
         
         # Validation 3: Overlimit check
-        # Pass if credit_limit >= projected_balance
+        # COBOL formula: WS-TEMP-BAL = ACCT-CURR-CYC-CREDIT - ACCT-CURR-CYC-DEBIT + DALYTRAN-AMT
+        # COBOL check: IF ACCT-CREDIT-LIMIT >= WS-TEMP-BAL
+        # 
+        # With our sign convention (purchases are negative, payments are positive):
+        # - projected_balance becomes negative when in debt
+        # - We need to check if the debt exceeds the credit limit
+        # - Pass if projected_balance >= -credit_limit (i.e., debt doesn't exceed limit)
+        # 
+        # Examples:
+        # - credit_limit=1000, projected_balance=-1000 → -1000 >= -1000 → TRUE (pass, exactly at limit)
+        # - credit_limit=1000, projected_balance=-1050 → -1050 >= -1000 → FALSE (reject, overlimit)
+        # - credit_limit=1000, projected_balance=500 → 500 >= -1000 → TRUE (pass, payment/credit)
         joined_df = joined_df.withColumn(
             "v3_within_limit",
-            F.col("credit_limit") >= F.col("projected_balance")
+            F.col("projected_balance") >= -F.col("credit_limit")
         ).withColumn(
             "reject_code_3",
             F.when(
@@ -270,10 +288,24 @@ class CBTRN02CJob:
         )
         
         # Split into valid and rejected
+        # Cache the joined_df to ensure consistent results when filtering
+        joined_df = joined_df.cache()
+        joined_df.count()  # Force materialization
+        
         valid_df = joined_df.filter(F.col("is_valid") == True)
         rejects_df = joined_df.filter(F.col("is_valid") == False)
         
-        return valid_df, rejects_df
+        # Cache the results to ensure they're not re-evaluated
+        valid_df = valid_df.cache()
+        rejects_df = rejects_df.cache()
+        
+        # Force materialization and get counts
+        # IMPORTANT: We return the counts here because calling count() again later
+        # after _post_transactions updates the accounts table can cause issues
+        valid_count = valid_df.count()
+        reject_count = rejects_df.count()
+        
+        return valid_df, rejects_df, valid_count, reject_count
     
     def _post_transactions(self, valid_df: DataFrame):
         """Post valid transactions to TRANSACTIONS table and update balances."""
@@ -376,22 +408,51 @@ class CBTRN02CJob:
         except Exception as e:
             print(f"Warning: Could not update tran_cat_balance: {e}")
     
-    def _write_rejects(self, rejects_df: DataFrame):
-        """Write rejected transactions to TRANSACTION_REJECTS table."""
-        reject_records = rejects_df.select(
-            "tran_id", "card_num", "tran_amt", "orig_ts", "reject_reason_code"
-        ).withColumn(
-            "reject_reason_desc",
-            F.when(F.col("reject_reason_code") == 100, F.lit(REASON_DESCRIPTIONS[100]))
-             .when(F.col("reject_reason_code") == 101, F.lit(REASON_DESCRIPTIONS[101]))
-             .when(F.col("reject_reason_code") == 102, F.lit(REASON_DESCRIPTIONS[102]))
-             .when(F.col("reject_reason_code") == 103, F.lit(REASON_DESCRIPTIONS[103]))
-             .otherwise(F.lit("UNKNOWN REJECTION REASON"))
-        ).withColumn("batch_id", F.lit(self.batch_id)) \
-         .withColumn("rejected_ts", F.current_timestamp())
+    def _write_rejects_from_data(self, reject_data: list):
+        """
+        Write rejected transactions to TRANSACTION_REJECTS table from collected data.
         
-        reject_records.write.format("delta").mode("append").saveAsTable(self.rejects_table)
-        print(f"Wrote {reject_records.count()} rejects to {self.rejects_table}")
+        This method takes pre-collected data (list of Row objects) to avoid
+        re-evaluation issues when the underlying tables have been modified.
+        """
+        from pyspark.sql.types import StructType, StructField, StringType, DecimalType, IntegerType, TimestampType
+        from decimal import Decimal as PyDecimal
+        
+        # Define schema to match the table schema
+        schema = StructType([
+            StructField("tran_id", StringType(), True),
+            StructField("card_num", StringType(), True),
+            StructField("tran_amt", DecimalType(11, 2), True),
+            StructField("orig_ts", StringType(), True),
+            StructField("reject_reason_code", IntegerType(), True),
+            StructField("reject_reason_desc", StringType(), True),
+            StructField("batch_id", StringType(), True),
+            StructField("rejected_ts", TimestampType(), True)
+        ])
+        
+        # Convert collected data to list of tuples with proper types
+        reject_rows = []
+        for row in reject_data:
+            reject_code = row.reject_reason_code
+            # Convert tran_amt to Python Decimal with proper precision
+            tran_amt = PyDecimal(str(row.tran_amt)) if row.tran_amt is not None else None
+            reject_rows.append((
+                row.tran_id,
+                row.card_num,
+                tran_amt,
+                row.orig_ts,
+                reject_code,
+                REASON_DESCRIPTIONS.get(reject_code, "UNKNOWN REJECTION REASON"),
+                self.batch_id,
+                datetime.now()
+            ))
+        
+        # Create DataFrame with explicit schema
+        reject_df = self.spark.createDataFrame(reject_rows, schema)
+        
+        # Write to table
+        reject_df.write.format("delta").mode("append").saveAsTable(self.rejects_table)
+        print(f"Wrote {len(reject_data)} rejects to {self.rejects_table}")
     
     def _generate_stats(self) -> dict:
         """Generate reconciliation statistics."""

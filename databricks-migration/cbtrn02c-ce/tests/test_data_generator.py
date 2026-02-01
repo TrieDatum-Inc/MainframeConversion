@@ -160,14 +160,14 @@ VALUES ('{xref.card_num}', '{xref.acct_id}', '{xref.cust_id}');"""
         return {
             'acct_id': acct.acct_id,
             'active_status': acct.active_status,
-            'curr_bal': float(acct.curr_bal),
-            'credit_limit': float(acct.credit_limit),
-            'cash_credit_limit': float(acct.cash_credit_limit),
+            'curr_bal': Decimal(str(acct.curr_bal)),
+            'credit_limit': Decimal(str(acct.credit_limit)),
+            'cash_credit_limit': Decimal(str(acct.cash_credit_limit)),
             'open_date': acct.open_date,
             'expiration_date': acct.expiration_date,
             'reissue_date': acct.reissue_date,
-            'curr_cyc_credit': float(acct.curr_cyc_credit),
-            'curr_cyc_debit': float(acct.curr_cyc_debit),
+            'curr_cyc_credit': Decimal(str(acct.curr_cyc_credit)),
+            'curr_cyc_debit': Decimal(str(acct.curr_cyc_debit)),
             'group_id': acct.group_id
         }
     
