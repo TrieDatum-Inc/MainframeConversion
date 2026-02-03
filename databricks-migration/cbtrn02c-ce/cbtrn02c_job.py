@@ -134,11 +134,14 @@ class CBTRN02CJob:
         return stats
     
     def _read_daily_transactions(self) -> DataFrame:
-        """Read daily transactions from DALYTRAN table."""
+        """Read daily transactions from DALYTRAN table.
+        
+        Note: Only reads transactions with the specified batch_id.
+        Removed 'OR batch_id IS NULL' to prevent reprocessing untagged rows on every run.
+        """
         query = f"""
             SELECT * FROM {self.dalytran_table}
             WHERE batch_id = '{self.batch_id}'
-            OR batch_id IS NULL
             ORDER BY tran_id
         """
         return self.spark.sql(query)
@@ -308,27 +311,69 @@ class CBTRN02CJob:
         return valid_df, rejects_df, valid_count, reject_count
     
     def _post_transactions(self, valid_df: DataFrame):
-        """Post valid transactions to TRANSACTIONS table and update balances."""
+        """Post valid transactions to TRANSACTIONS table and update balances.
+        
+        IDEMPOTENCY: Uses MERGE keyed by (batch_id, tran_id) to prevent duplicates.
+        Only applies balance updates for transactions not already posted.
+        """
+        from delta.tables import DeltaTable
+        
         proc_ts = datetime.now().strftime("%Y-%m-%d-%H.%M.%S.%f")[:26]
         
         # Prepare transaction records
         tran_records = valid_df.select(
             "tran_id", "tran_type_cd", "tran_cat_cd", "tran_source", "tran_desc",
             "tran_amt", "merchant_id", "merchant_name", "merchant_city",
-            "merchant_zip", "card_num", "orig_ts"
+            "merchant_zip", "card_num", "orig_ts", "xref_acct_id"
         ).withColumn("proc_ts", F.lit(proc_ts)) \
          .withColumn("batch_id", F.lit(self.batch_id)) \
          .withColumn("created_ts", F.current_timestamp())
         
-        # Write to transactions table
-        tran_records.write.format("delta").mode("append").saveAsTable(self.transactions_table)
-        print(f"Posted {tran_records.count()} transactions to {self.transactions_table}")
+        # IDEMPOTENCY: Find transactions already posted for this batch
+        existing_posted = (
+            self.spark.table(self.transactions_table)
+            .filter(F.col("batch_id") == self.batch_id)
+            .select("tran_id").distinct()
+        )
         
-        # Update account balances
-        self._update_account_balances(valid_df)
+        # Filter to only NEW transactions (not already posted)
+        new_tran_records = tran_records.join(existing_posted, on="tran_id", how="left_anti")
+        new_count = new_tran_records.count()
         
-        # Update transaction category balances
-        self._update_tran_cat_balances(valid_df)
+        if new_count == 0:
+            print(f"All transactions already posted for batch {self.batch_id}. Skipping.")
+            return
+        
+        # Use MERGE to insert new transactions (keyed by batch_id + tran_id)
+        # This prevents duplicates even if the left_anti join is somehow bypassed
+        tx_delta = DeltaTable.forName(self.spark, self.transactions_table)
+        
+        # Select only the columns that exist in the target table (exclude xref_acct_id)
+        insert_records = new_tran_records.select(
+            "tran_id", "tran_type_cd", "tran_cat_cd", "tran_source", "tran_desc",
+            "tran_amt", "merchant_id", "merchant_name", "merchant_city",
+            "merchant_zip", "card_num", "orig_ts", "proc_ts", "batch_id", "created_ts"
+        )
+        
+        tx_delta.alias("t").merge(
+            insert_records.alias("s"),
+            "t.batch_id = s.batch_id AND t.tran_id = s.tran_id"
+        ).whenNotMatchedInsertAll().execute()
+        
+        print(f"Posted {new_count} NEW transactions to {self.transactions_table}")
+        
+        # IDEMPOTENCY: Only update balances for NEW transactions
+        # Filter valid_df to only include new transactions
+        new_valid_df = valid_df.join(existing_posted, on="tran_id", how="left_anti")
+        
+        if new_valid_df.count() > 0:
+            # Update account balances (only for new transactions)
+            self._update_account_balances(new_valid_df)
+            
+            # Update transaction category balances (only for new transactions)
+            self._update_tran_cat_balances(new_valid_df)
+        else:
+            print("No new transactions to update balances for.")
     
     def _update_account_balances(self, valid_df: DataFrame):
         """
@@ -412,11 +457,13 @@ class CBTRN02CJob:
         """
         Write rejected transactions to TRANSACTION_REJECTS table from collected data.
         
+        IDEMPOTENCY: Uses MERGE keyed by (batch_id, tran_id) to prevent duplicates.
         This method takes pre-collected data (list of Row objects) to avoid
         re-evaluation issues when the underlying tables have been modified.
         """
         from pyspark.sql.types import StructType, StructField, StringType, DecimalType, IntegerType, TimestampType
         from decimal import Decimal as PyDecimal
+        from delta.tables import DeltaTable
         
         # Define schema to match the table schema
         schema = StructType([
@@ -450,9 +497,30 @@ class CBTRN02CJob:
         # Create DataFrame with explicit schema
         reject_df = self.spark.createDataFrame(reject_rows, schema)
         
-        # Write to table
-        reject_df.write.format("delta").mode("append").saveAsTable(self.rejects_table)
-        print(f"Wrote {len(reject_data)} rejects to {self.rejects_table}")
+        # IDEMPOTENCY: Find rejects already written for this batch
+        existing_rejects = (
+            self.spark.table(self.rejects_table)
+            .filter(F.col("batch_id") == self.batch_id)
+            .select("tran_id").distinct()
+        )
+        
+        # Filter to only NEW rejects (not already written)
+        new_reject_df = reject_df.join(existing_rejects, on="tran_id", how="left_anti")
+        new_count = new_reject_df.count()
+        
+        if new_count == 0:
+            print(f"All rejects already written for batch {self.batch_id}. Skipping.")
+            return
+        
+        # Use MERGE to insert new rejects (keyed by batch_id + tran_id)
+        rej_delta = DeltaTable.forName(self.spark, self.rejects_table)
+        
+        rej_delta.alias("t").merge(
+            new_reject_df.alias("s"),
+            "t.batch_id = s.batch_id AND t.tran_id = s.tran_id"
+        ).whenNotMatchedInsertAll().execute()
+        
+        print(f"Wrote {new_count} NEW rejects to {self.rejects_table}")
     
     def _generate_stats(self) -> dict:
         """Generate reconciliation statistics."""
