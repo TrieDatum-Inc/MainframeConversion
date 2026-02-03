@@ -315,8 +315,13 @@ class CBTRN02CJob:
 
         IDEMPOTENCY: Uses MERGE keyed by (batch_id, tran_id) to prevent duplicates.
         Only applies balance updates for transactions not already posted.
+        
+        NOTE: Uses collect/recreate pattern instead of persist/cache for compatibility
+        with Databricks Community Edition (Spark Connect).
         """
         from delta.tables import DeltaTable
+        from pyspark.sql.types import StructType, StructField, StringType, DecimalType, TimestampType
+        from decimal import Decimal as PyDecimal
 
         proc_ts = datetime.now().strftime("%Y-%m-%d-%H.%M.%S.%f")[:26]
 
@@ -337,49 +342,145 @@ class CBTRN02CJob:
         )
 
         # Filter to only NEW transactions (not already posted)
-        # IMPORTANT: Persist to avoid re-evaluation after MERGE modifies the table
-        # Without persist, Spark's lazy evaluation would re-read existing_posted after MERGE,
-        # causing new_tran_records to appear empty when used for balance updates
-        from pyspark import StorageLevel
-        new_tran_records = (
-            tran_records.join(existing_posted, on="tran_id", how="left_anti")
-            .persist(StorageLevel.MEMORY_AND_DISK)
-        )
-        new_count = new_tran_records.count()  # Materialize the persisted DataFrame
-
-        if new_count == 0:
-            print(f"All transactions already posted for batch {self.batch_id}. Skipping.")
-            new_tran_records.unpersist()
-            return
-
-        # Use MERGE to insert new transactions (keyed by batch_id + tran_id)
-        # This prevents duplicates even if the left_anti join is somehow bypassed
-        tx_delta = DeltaTable.forName(self.spark, self.transactions_table)
-
-        # Select only the columns that exist in the target table (exclude xref_acct_id)
+        new_tran_records = tran_records.join(existing_posted, on="tran_id", how="left_anti")
+        
+        # IMPORTANT: Compute balance update aggregates BEFORE the MERGE
+        # This avoids Spark lazy evaluation issues where the DataFrame would be
+        # re-evaluated after MERGE modifies the table (causing empty results)
+        # We use collect/recreate pattern instead of persist/cache for Databricks CE compatibility
+        
+        # Compute account balance updates and materialize via collect
+        account_updates_rows = new_tran_records.groupBy("xref_acct_id").agg(
+            F.sum("tran_amt").alias("total_amt"),
+            F.sum(F.when(F.col("tran_amt") >= 0, F.col("tran_amt")).otherwise(0)).alias("credit_amt"),
+            F.sum(F.when(F.col("tran_amt") < 0, F.col("tran_amt")).otherwise(0)).alias("debit_amt")
+        ).collect()
+        
+        # Compute category balance updates and materialize via collect
+        cat_updates_rows = new_tran_records.groupBy(
+            "xref_acct_id", "tran_type_cd", "tran_cat_cd"
+        ).agg(
+            F.sum("tran_amt").alias("total_amt")
+        ).collect()
+        
+        # Get count and check if empty
+        new_count = len(account_updates_rows) if account_updates_rows else 0
+        # Also need to get actual transaction count for insert
         insert_records = new_tran_records.select(
             "tran_id", "tran_type_cd", "tran_cat_cd", "tran_source", "tran_desc",
             "tran_amt", "merchant_id", "merchant_name", "merchant_city",
             "merchant_zip", "card_num", "orig_ts", "proc_ts", "batch_id", "created_ts"
         )
+        insert_rows = insert_records.collect()
+        tran_count = len(insert_rows)
+
+        if tran_count == 0:
+            print(f"All transactions already posted for batch {self.batch_id}. Skipping.")
+            return
+
+        # Recreate insert_records DataFrame from collected rows
+        insert_records_mat = self.spark.createDataFrame(insert_rows, insert_records.schema)
+
+        # Use MERGE to insert new transactions (keyed by batch_id + tran_id)
+        tx_delta = DeltaTable.forName(self.spark, self.transactions_table)
 
         tx_delta.alias("t").merge(
-            insert_records.alias("s"),
+            insert_records_mat.alias("s"),
             "t.batch_id = s.batch_id AND t.tran_id = s.tran_id"
         ).whenNotMatchedInsertAll().execute()
 
-        print(f"Posted {new_count} NEW transactions to {self.transactions_table}")
+        print(f"Posted {tran_count} NEW transactions to {self.transactions_table}")
 
-        # IDEMPOTENCY: Only update balances for NEW transactions
-        # Reuse new_tran_records which already has xref_acct_id and is filtered to new transactions
-        # Update account balances (only for new transactions)
-        self._update_account_balances(new_tran_records)
+        # IDEMPOTENCY: Apply balance updates using materialized aggregates
+        # These were computed BEFORE the MERGE, so they reflect the correct "new" transactions
+        if account_updates_rows:
+            self._update_account_balances_from_rows(account_updates_rows)
 
-        # Update transaction category balances (only for new transactions)
-        self._update_tran_cat_balances(new_tran_records)
+        if cat_updates_rows:
+            self._update_tran_cat_balances_from_rows(cat_updates_rows)
+    
+    def _update_account_balances_from_rows(self, account_updates_rows: list):
+        """
+        Update account balances from pre-collected aggregated rows.
+        
+        This method accepts pre-materialized data to avoid Spark lazy evaluation
+        issues when the source table has been modified.
+        """
+        from delta.tables import DeltaTable
+        from pyspark.sql.types import StructType, StructField, StringType, DecimalType
+        
+        # Define schema for account updates
+        schema = StructType([
+            StructField("xref_acct_id", StringType(), True),
+            StructField("total_amt", DecimalType(11, 2), True),
+            StructField("credit_amt", DecimalType(11, 2), True),
+            StructField("debit_amt", DecimalType(11, 2), True)
+        ])
+        
+        # Recreate DataFrame from collected rows
+        account_updates = self.spark.createDataFrame(account_updates_rows, schema)
+        
+        accounts_delta = DeltaTable.forName(self.spark, self.accounts_table)
 
-        # Clean up persisted DataFrame to free memory
-        new_tran_records.unpersist()
+        accounts_delta.alias("a").merge(
+            account_updates.alias("u"),
+            "a.acct_id = u.xref_acct_id"
+        ).whenMatchedUpdate(set={
+            "curr_bal": F.col("a.curr_bal") + F.col("u.total_amt"),
+            "curr_cyc_credit": F.col("a.curr_cyc_credit") + F.col("u.credit_amt"),
+            "curr_cyc_debit": F.col("a.curr_cyc_debit") + F.col("u.debit_amt"),
+            "last_updated_ts": F.current_timestamp(),
+            "last_updated_batch_id": F.lit(self.batch_id)
+        }).execute()
+
+        print(f"Updated {len(account_updates_rows)} account balances")
+    
+    def _update_tran_cat_balances_from_rows(self, cat_updates_rows: list):
+        """
+        Update transaction category balances from pre-collected aggregated rows.
+        
+        This method accepts pre-materialized data to avoid Spark lazy evaluation
+        issues when the source table has been modified.
+        """
+        from delta.tables import DeltaTable
+        from pyspark.sql.types import StructType, StructField, StringType, DecimalType
+        
+        # Define schema for category updates
+        schema = StructType([
+            StructField("xref_acct_id", StringType(), True),
+            StructField("tran_type_cd", StringType(), True),
+            StructField("tran_cat_cd", StringType(), True),
+            StructField("total_amt", DecimalType(11, 2), True)
+        ])
+        
+        # Recreate DataFrame from collected rows
+        cat_updates = self.spark.createDataFrame(cat_updates_rows, schema)
+        cat_updates = cat_updates.withColumnRenamed("xref_acct_id", "acct_id")
+
+        try:
+            tran_cat_delta = DeltaTable.forName(self.spark, self.tran_cat_balance_table)
+
+            tran_cat_delta.alias("t").merge(
+                cat_updates.alias("u"),
+                """t.acct_id = u.acct_id
+                   AND t.tran_type_cd = u.tran_type_cd
+                   AND t.tran_cat_cd = u.tran_cat_cd"""
+            ).whenMatchedUpdate(set={
+                "tran_cat_bal": F.col("t.tran_cat_bal") + F.col("u.total_amt"),
+                "last_updated_ts": F.current_timestamp(),
+                "last_updated_batch_id": F.lit(self.batch_id)
+            }).whenNotMatchedInsert(values={
+                "acct_id": F.col("u.acct_id"),
+                "tran_type_cd": F.col("u.tran_type_cd"),
+                "tran_cat_cd": F.col("u.tran_cat_cd"),
+                "tran_cat_bal": F.col("u.total_amt"),
+                "last_updated_ts": F.current_timestamp(),
+                "last_updated_batch_id": F.lit(self.batch_id)
+            }).execute()
+
+            print(f"Updated {len(cat_updates_rows)} transaction category balances")
+        except Exception as e:
+            print(f"Warning: Could not update tran_cat_balance: {e}")
 
     def _update_account_balances(self, valid_df: DataFrame):
         """
