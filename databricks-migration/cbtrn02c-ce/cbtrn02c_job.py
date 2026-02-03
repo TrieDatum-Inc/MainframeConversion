@@ -363,17 +363,12 @@ class CBTRN02CJob:
         print(f"Posted {new_count} NEW transactions to {self.transactions_table}")
         
         # IDEMPOTENCY: Only update balances for NEW transactions
-        # Filter valid_df to only include new transactions
-        new_valid_df = valid_df.join(existing_posted, on="tran_id", how="left_anti")
+        # Reuse new_tran_records which already has xref_acct_id and is filtered to new transactions
+        # Update account balances (only for new transactions)
+        self._update_account_balances(new_tran_records)
         
-        if new_valid_df.count() > 0:
-            # Update account balances (only for new transactions)
-            self._update_account_balances(new_valid_df)
-            
-            # Update transaction category balances (only for new transactions)
-            self._update_tran_cat_balances(new_valid_df)
-        else:
-            print("No new transactions to update balances for.")
+        # Update transaction category balances (only for new transactions)
+        self._update_tran_cat_balances(new_tran_records)
     
     def _update_account_balances(self, valid_df: DataFrame):
         """
