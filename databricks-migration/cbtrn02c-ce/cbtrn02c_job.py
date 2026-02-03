@@ -27,7 +27,7 @@ from decimal import Decimal
 from pyspark.sql import SparkSession, DataFrame, Window
 from pyspark.sql import functions as F
 from pyspark.sql.types import (
-    StructType, StructField, StringType, DecimalType, 
+    StructType, StructField, StringType, DecimalType,
     IntegerType, TimestampType, LongType
 )
 
@@ -48,11 +48,11 @@ REASON_DESCRIPTIONS = {
 class CBTRN02CJob:
     """
     PySpark implementation of CBTRN02C batch job.
-    
+
     This class processes daily transactions sequentially (like COBOL) to ensure
     proper balance updates when multiple transactions affect the same account.
     """
-    
+
     def __init__(
         self,
         spark: SparkSession,
@@ -62,7 +62,7 @@ class CBTRN02CJob:
         self.spark = spark
         self.database = database
         self.batch_id = batch_id or datetime.now().strftime("%Y%m%d%H%M%S")
-        
+
         # Table names (Databricks CE uses database.table format)
         self.dalytran_table = f"{database}.dalytran"
         self.transactions_table = f"{database}.transactions"
@@ -70,16 +70,16 @@ class CBTRN02CJob:
         self.card_xref_table = f"{database}.card_xref"
         self.tran_cat_balance_table = f"{database}.tran_cat_balance"
         self.rejects_table = f"{database}.transaction_rejects"
-        
+
         # Counters for reconciliation
         self.records_read = 0
         self.records_written = 0
         self.records_rejected = 0
-        
+
     def run(self) -> dict:
         """
         Main entry point - runs the complete CBTRN02C job.
-        
+
         Returns:
             dict: Statistics including records read, written, rejected
         """
@@ -88,20 +88,20 @@ class CBTRN02CJob:
         print(f"Batch ID: {self.batch_id}")
         print(f"Database: {self.database}")
         print("=" * 60)
-        
+
         # Step 1: Read daily transactions
         dalytran_df = self._read_daily_transactions()
         self.records_read = dalytran_df.count()
         print(f"Records read from DALYTRAN: {self.records_read}")
-        
+
         if self.records_read == 0:
             print("No transactions to process. Exiting.")
             return self._generate_stats()
-        
+
         # Step 2: Process transactions sequentially by account
         # This matches COBOL behavior where balance updates affect subsequent validations
         valid_df, rejects_df, valid_count, reject_count = self._process_transactions_sequentially(dalytran_df)
-        
+
         # IMPORTANT: Collect reject data BEFORE posting transactions
         # because _post_transactions modifies the accounts table, which can
         # affect the rejects_df when it's re-evaluated
@@ -110,32 +110,32 @@ class CBTRN02CJob:
             reject_data = rejects_df.select(
                 "tran_id", "card_num", "tran_amt", "orig_ts", "reject_reason_code"
             ).collect()
-        
+
         # Step 3: Post valid transactions
         if valid_count > 0:
             self._post_transactions(valid_df)
             self.records_written = valid_count
-        
+
         # Step 4: Write rejects (using pre-collected data)
         if reject_count > 0 and reject_data:
             self._write_rejects_from_data(reject_data)
             self.records_rejected = reject_count
-        
+
         # Step 5: Generate reconciliation report
         stats = self._generate_stats()
-        
+
         print("=" * 60)
         print("CBTRN02C - POST DAILY TRANSACTIONS - COMPLETED")
         print(f"Transactions Processed: {self.records_read}")
         print(f"Transactions Posted:    {self.records_written}")
         print(f"Transactions Rejected:  {self.records_rejected}")
         print("=" * 60)
-        
+
         return stats
-    
+
     def _read_daily_transactions(self) -> DataFrame:
         """Read daily transactions from DALYTRAN table.
-        
+
         Note: Only reads transactions with the specified batch_id.
         Removed 'OR batch_id IS NULL' to prevent reprocessing untagged rows on every run.
         """
@@ -145,21 +145,21 @@ class CBTRN02CJob:
             ORDER BY tran_id
         """
         return self.spark.sql(query)
-    
+
     def _process_transactions_sequentially(self, dalytran_df: DataFrame):
         """
         Process transactions sequentially to match COBOL behavior.
-        
+
         COBOL processes one transaction at a time, updating account balances
         after each transaction. This affects overlimit validation for subsequent
         transactions on the same account.
-        
+
         We implement this using window functions with running totals.
         """
         # Load reference data
         xref_df = self.spark.table(self.card_xref_table)
         accounts_df = self.spark.table(self.accounts_table)
-        
+
         # Join with card_xref to get account ID
         joined_df = dalytran_df.alias("t").join(
             xref_df.alias("x"),
@@ -170,7 +170,7 @@ class CBTRN02CJob:
             F.col("x.acct_id").alias("xref_acct_id"),
             F.col("x.cust_id").alias("xref_cust_id")
         )
-        
+
         # Validation 1: Card number exists in XREFFILE
         joined_df = joined_df.withColumn(
             "v1_card_valid",
@@ -179,7 +179,7 @@ class CBTRN02CJob:
             "reject_code_1",
             F.when(~F.col("v1_card_valid"), F.lit(REASON_INVALID_CARD))
         )
-        
+
         # Join with accounts to get account details
         joined_df = joined_df.alias("t").join(
             accounts_df.alias("a"),
@@ -195,7 +195,7 @@ class CBTRN02CJob:
             F.col("a.curr_cyc_credit"),
             F.col("a.curr_cyc_debit")
         )
-        
+
         # Validation 2: Account exists in ACCTFILE
         joined_df = joined_df.withColumn(
             "v2_account_exists",
@@ -207,19 +207,19 @@ class CBTRN02CJob:
                 F.lit(REASON_ACCOUNT_NOT_FOUND)
             )
         )
-        
+
         # Calculate running balance per account for sequential processing
         # This is the key to matching COBOL behavior
         window_spec = Window.partitionBy("xref_acct_id").orderBy("tran_id").rowsBetween(
             Window.unboundedPreceding, Window.currentRow
         )
-        
+
         # Running sum of transaction amounts for this account
         joined_df = joined_df.withColumn(
             "running_tran_sum",
             F.sum("tran_amt").over(window_spec)
         )
-        
+
         # Calculate projected balance after this transaction
         # COBOL formula: WS-TEMP-BAL = ACCT-CURR-CYC-CREDIT - ACCT-CURR-CYC-DEBIT + DALYTRAN-AMT
         # With sequential processing, we need running total
@@ -227,16 +227,16 @@ class CBTRN02CJob:
             "projected_balance",
             F.col("curr_cyc_credit") - F.col("curr_cyc_debit") + F.col("running_tran_sum")
         )
-        
+
         # Validation 3: Overlimit check
         # COBOL formula: WS-TEMP-BAL = ACCT-CURR-CYC-CREDIT - ACCT-CURR-CYC-DEBIT + DALYTRAN-AMT
         # COBOL check: IF ACCT-CREDIT-LIMIT >= WS-TEMP-BAL
-        # 
+        #
         # With our sign convention (purchases are negative, payments are positive):
         # - projected_balance becomes negative when in debt
         # - We need to check if the debt exceeds the credit limit
         # - Pass if projected_balance >= -credit_limit (i.e., debt doesn't exceed limit)
-        # 
+        #
         # Examples:
         # - credit_limit=1000, projected_balance=-1000 → -1000 >= -1000 → TRUE (pass, exactly at limit)
         # - credit_limit=1000, projected_balance=-1050 → -1050 >= -1000 → FALSE (reject, overlimit)
@@ -247,13 +247,13 @@ class CBTRN02CJob:
         ).withColumn(
             "reject_code_3",
             F.when(
-                F.col("v1_card_valid") & 
-                F.col("v2_account_exists") & 
+                F.col("v1_card_valid") &
+                F.col("v2_account_exists") &
                 ~F.col("v3_within_limit"),
                 F.lit(REASON_OVERLIMIT)
             )
         )
-        
+
         # Validation 4: Expiration check
         # Extract date from timestamp (first 10 chars: YYYY-MM-DD)
         joined_df = joined_df.withColumn(
@@ -265,20 +265,20 @@ class CBTRN02CJob:
         ).withColumn(
             "reject_code_4",
             F.when(
-                F.col("v1_card_valid") & 
-                F.col("v2_account_exists") & 
-                F.col("v3_within_limit") & 
+                F.col("v1_card_valid") &
+                F.col("v2_account_exists") &
+                F.col("v3_within_limit") &
                 ~F.col("v4_not_expired"),
                 F.lit(REASON_EXPIRED)
             )
         )
-        
+
         # Determine final validation status
         joined_df = joined_df.withColumn(
             "is_valid",
-            F.col("v1_card_valid") & 
-            F.col("v2_account_exists") & 
-            F.col("v3_within_limit") & 
+            F.col("v1_card_valid") &
+            F.col("v2_account_exists") &
+            F.col("v3_within_limit") &
             F.col("v4_not_expired")
         ).withColumn(
             "reject_reason_code",
@@ -289,37 +289,37 @@ class CBTRN02CJob:
                 F.col("reject_code_4")
             )
         )
-        
+
         # Split into valid and rejected
         # Cache the joined_df to ensure consistent results when filtering
-        joined_df = joined_df.cache()
+        # joined_df = joined_df.cache()
         joined_df.count()  # Force materialization
-        
+
         valid_df = joined_df.filter(F.col("is_valid") == True)
         rejects_df = joined_df.filter(F.col("is_valid") == False)
-        
+
         # Cache the results to ensure they're not re-evaluated
-        valid_df = valid_df.cache()
-        rejects_df = rejects_df.cache()
-        
+        # valid_df = valid_df.cache()
+        # rejects_df = rejects_df.cache()
+
         # Force materialization and get counts
         # IMPORTANT: We return the counts here because calling count() again later
         # after _post_transactions updates the accounts table can cause issues
         valid_count = valid_df.count()
         reject_count = rejects_df.count()
-        
+
         return valid_df, rejects_df, valid_count, reject_count
-    
+
     def _post_transactions(self, valid_df: DataFrame):
         """Post valid transactions to TRANSACTIONS table and update balances.
-        
+
         IDEMPOTENCY: Uses MERGE keyed by (batch_id, tran_id) to prevent duplicates.
         Only applies balance updates for transactions not already posted.
         """
         from delta.tables import DeltaTable
-        
+
         proc_ts = datetime.now().strftime("%Y-%m-%d-%H.%M.%S.%f")[:26]
-        
+
         # Prepare transaction records
         tran_records = valid_df.select(
             "tran_id", "tran_type_cd", "tran_cat_cd", "tran_source", "tran_desc",
@@ -328,52 +328,63 @@ class CBTRN02CJob:
         ).withColumn("proc_ts", F.lit(proc_ts)) \
          .withColumn("batch_id", F.lit(self.batch_id)) \
          .withColumn("created_ts", F.current_timestamp())
-        
+
         # IDEMPOTENCY: Find transactions already posted for this batch
         existing_posted = (
             self.spark.table(self.transactions_table)
             .filter(F.col("batch_id") == self.batch_id)
             .select("tran_id").distinct()
         )
-        
+
         # Filter to only NEW transactions (not already posted)
-        new_tran_records = tran_records.join(existing_posted, on="tran_id", how="left_anti")
-        new_count = new_tran_records.count()
-        
+        # IMPORTANT: Persist to avoid re-evaluation after MERGE modifies the table
+        # Without persist, Spark's lazy evaluation would re-read existing_posted after MERGE,
+        # causing new_tran_records to appear empty when used for balance updates
+        from pyspark import StorageLevel
+        new_tran_records = (
+            tran_records.join(existing_posted, on="tran_id", how="left_anti")
+            .persist(StorageLevel.MEMORY_AND_DISK)
+        )
+        new_count = new_tran_records.count()  # Materialize the persisted DataFrame
+
         if new_count == 0:
             print(f"All transactions already posted for batch {self.batch_id}. Skipping.")
+            new_tran_records.unpersist()
             return
-        
+
         # Use MERGE to insert new transactions (keyed by batch_id + tran_id)
         # This prevents duplicates even if the left_anti join is somehow bypassed
         tx_delta = DeltaTable.forName(self.spark, self.transactions_table)
-        
+
         # Select only the columns that exist in the target table (exclude xref_acct_id)
         insert_records = new_tran_records.select(
             "tran_id", "tran_type_cd", "tran_cat_cd", "tran_source", "tran_desc",
             "tran_amt", "merchant_id", "merchant_name", "merchant_city",
             "merchant_zip", "card_num", "orig_ts", "proc_ts", "batch_id", "created_ts"
         )
-        
+
         tx_delta.alias("t").merge(
             insert_records.alias("s"),
             "t.batch_id = s.batch_id AND t.tran_id = s.tran_id"
         ).whenNotMatchedInsertAll().execute()
-        
+
         print(f"Posted {new_count} NEW transactions to {self.transactions_table}")
-        
+
         # IDEMPOTENCY: Only update balances for NEW transactions
         # Reuse new_tran_records which already has xref_acct_id and is filtered to new transactions
         # Update account balances (only for new transactions)
         self._update_account_balances(new_tran_records)
-        
+
         # Update transaction category balances (only for new transactions)
         self._update_tran_cat_balances(new_tran_records)
-    
+
+        # Clean up persisted DataFrame to free memory
+        new_tran_records.unpersist()
+
     def _update_account_balances(self, valid_df: DataFrame):
         """
         Update account balances after posting transactions.
-        
+
         COBOL logic:
         - ADD DALYTRAN-AMT TO ACCT-CURR-BAL
         - IF DALYTRAN-AMT >= 0: ADD TO ACCT-CURR-CYC-CREDIT
@@ -385,12 +396,12 @@ class CBTRN02CJob:
             F.sum(F.when(F.col("tran_amt") >= 0, F.col("tran_amt")).otherwise(0)).alias("credit_amt"),
             F.sum(F.when(F.col("tran_amt") < 0, F.col("tran_amt")).otherwise(0)).alias("debit_amt")
         )
-        
+
         # Use MERGE to update accounts
         from delta.tables import DeltaTable
-        
+
         accounts_delta = DeltaTable.forName(self.spark, self.accounts_table)
-        
+
         accounts_delta.alias("a").merge(
             account_updates.alias("u"),
             "a.acct_id = u.xref_acct_id"
@@ -401,13 +412,13 @@ class CBTRN02CJob:
             "last_updated_ts": F.current_timestamp(),
             "last_updated_batch_id": F.lit(self.batch_id)
         }).execute()
-        
+
         print(f"Updated {account_updates.count()} account balances")
-    
+
     def _update_tran_cat_balances(self, valid_df: DataFrame):
         """
         Update transaction category balances.
-        
+
         COBOL logic:
         - Key: ACCT-ID + TYPE-CD + CAT-CD
         - If record exists: ADD DALYTRAN-AMT TO TRAN-CAT-BAL
@@ -419,17 +430,17 @@ class CBTRN02CJob:
         ).agg(
             F.sum("tran_amt").alias("total_amt")
         ).withColumnRenamed("xref_acct_id", "acct_id")
-        
+
         # Use MERGE for upsert
         from delta.tables import DeltaTable
-        
+
         try:
             tran_cat_delta = DeltaTable.forName(self.spark, self.tran_cat_balance_table)
-            
+
             tran_cat_delta.alias("t").merge(
                 cat_updates.alias("u"),
-                """t.acct_id = u.acct_id 
-                   AND t.tran_type_cd = u.tran_type_cd 
+                """t.acct_id = u.acct_id
+                   AND t.tran_type_cd = u.tran_type_cd
                    AND t.tran_cat_cd = u.tran_cat_cd"""
             ).whenMatchedUpdate(set={
                 "tran_cat_bal": F.col("t.tran_cat_bal") + F.col("u.total_amt"),
@@ -443,15 +454,15 @@ class CBTRN02CJob:
                 "last_updated_ts": F.current_timestamp(),
                 "last_updated_batch_id": F.lit(self.batch_id)
             }).execute()
-            
+
             print(f"Updated {cat_updates.count()} transaction category balances")
         except Exception as e:
             print(f"Warning: Could not update tran_cat_balance: {e}")
-    
+
     def _write_rejects_from_data(self, reject_data: list):
         """
         Write rejected transactions to TRANSACTION_REJECTS table from collected data.
-        
+
         IDEMPOTENCY: Uses MERGE keyed by (batch_id, tran_id) to prevent duplicates.
         This method takes pre-collected data (list of Row objects) to avoid
         re-evaluation issues when the underlying tables have been modified.
@@ -459,7 +470,7 @@ class CBTRN02CJob:
         from pyspark.sql.types import StructType, StructField, StringType, DecimalType, IntegerType, TimestampType
         from decimal import Decimal as PyDecimal
         from delta.tables import DeltaTable
-        
+
         # Define schema to match the table schema
         schema = StructType([
             StructField("tran_id", StringType(), True),
@@ -471,7 +482,7 @@ class CBTRN02CJob:
             StructField("batch_id", StringType(), True),
             StructField("rejected_ts", TimestampType(), True)
         ])
-        
+
         # Convert collected data to list of tuples with proper types
         reject_rows = []
         for row in reject_data:
@@ -488,35 +499,35 @@ class CBTRN02CJob:
                 self.batch_id,
                 datetime.now()
             ))
-        
+
         # Create DataFrame with explicit schema
         reject_df = self.spark.createDataFrame(reject_rows, schema)
-        
+
         # IDEMPOTENCY: Find rejects already written for this batch
         existing_rejects = (
             self.spark.table(self.rejects_table)
             .filter(F.col("batch_id") == self.batch_id)
             .select("tran_id").distinct()
         )
-        
+
         # Filter to only NEW rejects (not already written)
         new_reject_df = reject_df.join(existing_rejects, on="tran_id", how="left_anti")
         new_count = new_reject_df.count()
-        
+
         if new_count == 0:
             print(f"All rejects already written for batch {self.batch_id}. Skipping.")
             return
-        
+
         # Use MERGE to insert new rejects (keyed by batch_id + tran_id)
         rej_delta = DeltaTable.forName(self.spark, self.rejects_table)
-        
+
         rej_delta.alias("t").merge(
             new_reject_df.alias("s"),
             "t.batch_id = s.batch_id AND t.tran_id = s.tran_id"
         ).whenNotMatchedInsertAll().execute()
-        
+
         print(f"Wrote {new_count} NEW rejects to {self.rejects_table}")
-    
+
     def _generate_stats(self) -> dict:
         """Generate reconciliation statistics."""
         return {
@@ -543,33 +554,33 @@ def main():
         help="Database name (default: carddemo)",
         default="carddemo"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Create or get Spark session
     spark = SparkSession.builder \
         .appName("CBTRN02C_PostDailyTransactions") \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
         .getOrCreate()
-    
+
     # Set database
     spark.sql(f"USE {args.database}")
-    
+
     # Run the job
     job = CBTRN02CJob(
         spark=spark,
         database=args.database,
         batch_id=args.batch_id
     )
-    
+
     stats = job.run()
-    
+
     # Print final stats as JSON for shell script parsing
     import json
     print("\n--- JOB STATS ---")
     print(json.dumps(stats, indent=2))
-    
+
     # Return code based on rejects
     if stats["records_rejected"] > 0:
         sys.exit(4)  # Warning: some rejects (matches COBOL return code)
