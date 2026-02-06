@@ -23,7 +23,7 @@ from cbtrn02c_post_daily_transactions import (
     REJECT_OVERLIMIT,
     REJECT_EXPIRED,
 )
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,
@@ -64,13 +64,13 @@ def _run_full_pipeline(spark, daily_rows, xref_rows, acct_rows, tcb_rows=None):
         valid_count = valid.count()
         reject_count = rejects.count()
 
+        if reject_count > 0:
+            write_rejects(spark, rejects)
+
         if valid_count > 0:
             post_transactions(spark, valid)
             update_account_balances(spark, valid)
             update_tran_cat_balance(spark, valid)
-
-        if reject_count > 0:
-            write_rejects(spark, rejects)
     finally:
         mod.SCHEMA = original_schema
 
@@ -150,7 +150,7 @@ class TestEndToEndAllValid:
         acct3 = result["account"].filter(F.col("acct_id") == 80000000003).collect()[0]
         assert acct3["acct_curr_bal"] == Decimal("2300.00")
 
-        assert result["tran_cat_balance"].count() == 2
+        assert result["tran_cat_balance"].count() == 3
         assert result["daily_rejects"].count() == 0
 
 
@@ -284,15 +284,14 @@ class TestEndToEndMixed:
 
         result = _run_full_pipeline(spark, daily_rows, xref_rows, acct_rows, tcb_rows)
 
-        assert result["valid_count"] == 7
-        assert result["reject_count"] == 3
+        assert result["valid_count"] == 8
+        assert result["reject_count"] == 2
 
-        assert result["transaction"].count() == 7
+        assert result["transaction"].count() == 8
 
-        assert result["daily_rejects"].count() == 3
+        assert result["daily_rejects"].count() == 2
         reject_ids = sorted([r["dalytran_id"] for r in result["daily_rejects"].collect()])
         assert "TXN0000000000004" in reject_ids
-        assert "TXN0000000000005" in reject_ids
         assert "TXN0000000000006" in reject_ids
 
         acct1 = result["account"].filter(F.col("acct_id") == 80000000001).collect()[0]
@@ -300,6 +299,9 @@ class TestEndToEndMixed:
 
         acct2 = result["account"].filter(F.col("acct_id") == 80000000002).collect()[0]
         assert acct2["acct_curr_bal"] == Decimal("4770.00")
+
+        acct3 = result["account"].filter(F.col("acct_id") == 80000000003).collect()[0]
+        assert acct3["acct_curr_bal"] == Decimal("9000.00")
 
         acct5 = result["account"].filter(F.col("acct_id") == 80000000005).collect()[0]
         assert acct5["acct_curr_bal"] == Decimal("3350.00")

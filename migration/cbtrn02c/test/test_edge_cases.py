@@ -24,7 +24,7 @@ from cbtrn02c_post_daily_transactions import (
     REJECT_OVERLIMIT,
     REJECT_EXPIRED,
 )
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,

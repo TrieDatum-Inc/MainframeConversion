@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from cbtrn02c_post_daily_transactions import validate_and_split, post_transactions
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,

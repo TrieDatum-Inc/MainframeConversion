@@ -332,6 +332,10 @@ def main() -> None:
     print(f"CBTRN02C: Transactions validated: {valid_count}")
     print(f"CBTRN02C: Transactions rejected:  {reject_count}")
 
+    if reject_count > 0:
+        write_rejects(spark, rejects)
+        print("CBTRN02C: Rejected transactions written to DAILY_REJECTS table")
+
     if valid_count > 0:
         post_transactions(spark, valid)
         print("CBTRN02C: Transactions posted to TRANSACT table")
@@ -341,10 +345,6 @@ def main() -> None:
 
         update_tran_cat_balance(spark, valid)
         print("CBTRN02C: Transaction category balances updated")
-
-    if reject_count > 0:
-        write_rejects(spark, rejects)
-        print("CBTRN02C: Rejected transactions written to DAILY_REJECTS table")
 
     valid.unpersist()
     rejects.unpersist()

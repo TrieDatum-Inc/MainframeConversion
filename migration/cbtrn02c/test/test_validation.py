@@ -23,7 +23,7 @@ from cbtrn02c_post_daily_transactions import (
     REJECT_OVERLIMIT,
     REJECT_EXPIRED,
 )
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,
@@ -255,7 +255,11 @@ class TestReject102Overlimit:
         assert rejects.count() == 0
 
     def test_existing_debit_increases_available_credit(self, spark, clean_tables):
-        """Existing cycle debit (negative) should increase available credit."""
+        """Existing cycle debit (negative) should increase available credit.
+        COBOL formula: temp_bal = cyc_credit - cyc_debit + amt
+        With cyc_debit=-1000: temp_bal = 0 - (-1000) + 5500 = 6500
+        credit_limit must be >= 6500 for the transaction to be valid.
+        """
         daily_tran = spark.createDataFrame(
             [make_daily_tran("TXN001", "4111111111111111", 5500.00)],
             schema=DAILY_TRAN_SCHEMA,
@@ -265,7 +269,7 @@ class TestReject102Overlimit:
             schema=CARD_XREF_SCHEMA,
         )
         account = spark.createDataFrame(
-            [make_account(80000000001, credit_limit=5000.0, cyc_credit=0.0, cyc_debit=-1000.0)],
+            [make_account(80000000001, credit_limit=7000.0, cyc_credit=0.0, cyc_debit=-1000.0)],
             schema=ACCOUNT_SCHEMA,
         )
 

@@ -22,7 +22,7 @@ from cbtrn02c_post_daily_transactions import (
     REJECT_OVERLIMIT,
     REJECT_EXPIRED,
 )
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,
@@ -118,10 +118,16 @@ class TestWriteRejects:
             [
                 make_daily_tran("TXN001", "9999999999999999", 100.00),
                 make_daily_tran("TXN002", "4111111111111111", 10000.00),
-                make_daily_tran("TXN003", "4111111111111111", 100.00, orig_ts="2026-06-15-10.00.00.000000"),
+                make_daily_tran("TXN003", "4222222222222222", 100.00, orig_ts="2026-06-15-10.00.00.000000"),
             ],
-            [make_xref("4111111111111111", 100000001, 80000000001)],
-            [make_account(80000000001, credit_limit=5000.0, cyc_credit=0.0, expiration_date="2025-12-31")],
+            [
+                make_xref("4111111111111111", 100000001, 80000000001),
+                make_xref("4222222222222222", 100000002, 80000000002),
+            ],
+            [
+                make_account(80000000001, credit_limit=5000.0, cyc_credit=0.0),
+                make_account(80000000002, expiration_date="2025-12-31"),
+            ],
         )
 
         assert result.count() == 3

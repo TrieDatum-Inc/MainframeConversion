@@ -20,7 +20,7 @@ from cbtrn02c_post_daily_transactions import (
     validate_and_split,
     update_tran_cat_balance,
 )
-from conftest import (
+from helpers import (
     TEST_SCHEMA,
     DAILY_TRAN_SCHEMA,
     CARD_XREF_SCHEMA,
