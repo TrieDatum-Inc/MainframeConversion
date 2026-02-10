@@ -115,7 +115,7 @@ class CardXref(Base):
 class Transaction(Base):
     __tablename__ = "transactions"
 
-    id: Mapped[str] = mapped_column(String(16), primary_key=True)
+    id: Mapped[str] = mapped_column(String(20), primary_key=True)
     type_cd: Mapped[str] = mapped_column(String(2), default="")
     cat_cd: Mapped[int] = mapped_column(Integer, default=0)
     source: Mapped[str] = mapped_column(String(10), default="")

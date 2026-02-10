@@ -179,7 +179,7 @@ class CardXrefResponse(CardXrefBase):
 
 
 class TransactionBase(BaseModel):
-    id: str = Field(..., max_length=16)
+    id: str = Field(..., max_length=20)
     type_cd: str = Field("", max_length=2)
     cat_cd: int = Field(0)
     source: str = Field("", max_length=10)
