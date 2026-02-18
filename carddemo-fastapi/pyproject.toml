@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "carddemo-fastapi"
+version = "0.1.0"
+description = "FastAPI REST API conversion of CardDemo mainframe CICS programs"
+authors = ["CardDemo Team"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "0.115.0"
+uvicorn = {version = "0.30.6", extras = ["standard"]}
+sqlalchemy = "2.0.35"
+pymysql = "1.1.1"
+cryptography = "43.0.1"
+pydantic = "2.9.2"
+python-jose = {version = "3.3.0", extras = ["cryptography"]}
+passlib = {version = "1.7.4", extras = ["bcrypt"]}
+python-multipart = "0.0.12"
+python-dotenv = "1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
