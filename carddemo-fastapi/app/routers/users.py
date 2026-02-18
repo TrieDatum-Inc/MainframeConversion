@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import require_admin
+from app.models.models import User
 from app.schemas.schemas import (
     UserResponse,
     UserCreateRequest,
@@ -26,6 +28,7 @@ def list_users_endpoint(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
+    admin_user: User = Depends(require_admin),
 ):
     result = list_users(db, user_id_filter=user_id_filter, page=page, page_size=page_size)
     return PaginatedResponse(
@@ -38,14 +41,14 @@ def list_users_endpoint(
 
 
 @router.post("", response_model=UserResponse, status_code=201)
-def add_user(request: UserCreateRequest, db: Session = Depends(get_db)):
+def add_user(request: UserCreateRequest, db: Session = Depends(get_db), admin_user: User = Depends(require_admin)):
     data = request.model_dump()
     user = create_user(db, data)
     return UserResponse.model_validate(user)
 
 
 @router.get("/{user_id}", response_model=UserResponse)
-def get_user_endpoint(user_id: str, db: Session = Depends(get_db)):
+def get_user_endpoint(user_id: str, db: Session = Depends(get_db), admin_user: User = Depends(require_admin)):
     user = get_user(db, user_id)
     return UserResponse.model_validate(user)
 
@@ -55,6 +58,7 @@ def update_user_endpoint(
     user_id: str,
     request: UserUpdateRequest,
     db: Session = Depends(get_db),
+    admin_user: User = Depends(require_admin),
 ):
     data = request.model_dump(exclude_unset=True)
     user = update_user(db, user_id, data)
@@ -62,5 +66,5 @@ def update_user_endpoint(
 
 
 @router.delete("/{user_id}", response_model=MessageResponse)
-def delete_user_endpoint(user_id: str, db: Session = Depends(get_db)):
+def delete_user_endpoint(user_id: str, db: Session = Depends(get_db), admin_user: User = Depends(require_admin)):
     return delete_user(db, user_id)

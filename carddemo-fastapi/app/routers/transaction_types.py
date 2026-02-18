@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import require_admin
+from app.models.models import User
 from app.schemas.schemas import (
     TransactionTypeResponse,
     TransactionTypeCreateRequest,
@@ -27,6 +29,7 @@ def list_types_endpoint(
     page: int = Query(1, ge=1),
     page_size: int = Query(7, ge=1, le=100),
     db: Session = Depends(get_db),
+    admin_user: User = Depends(require_admin),
 ):
     result = list_transaction_types(
         db,
@@ -45,7 +48,7 @@ def list_types_endpoint(
 
 
 @router.get("/{type_cd}", response_model=TransactionTypeResponse)
-def get_type_endpoint(type_cd: str, db: Session = Depends(get_db)):
+def get_type_endpoint(type_cd: str, db: Session = Depends(get_db), admin_user: User = Depends(require_admin)):
     ttype = get_transaction_type(db, type_cd)
     return TransactionTypeResponse.model_validate(ttype)
 
@@ -54,6 +57,7 @@ def get_type_endpoint(type_cd: str, db: Session = Depends(get_db)):
 def create_type_endpoint(
     request: TransactionTypeCreateRequest,
     db: Session = Depends(get_db),
+    admin_user: User = Depends(require_admin),
 ):
     data = request.model_dump()
     ttype = create_transaction_type(db, data)
@@ -65,6 +69,7 @@ def update_type_endpoint(
     type_cd: str,
     request: TransactionTypeUpdateRequest,
     db: Session = Depends(get_db),
+    admin_user: User = Depends(require_admin),
 ):
     data = request.model_dump()
     ttype = update_transaction_type(db, type_cd, data)
@@ -72,5 +77,5 @@ def update_type_endpoint(
 
 
 @router.delete("/{type_cd}", response_model=MessageResponse)
-def delete_type_endpoint(type_cd: str, db: Session = Depends(get_db)):
+def delete_type_endpoint(type_cd: str, db: Session = Depends(get_db), admin_user: User = Depends(require_admin)):
     return delete_transaction_type(db, type_cd)

@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import get_current_user
+from app.models.models import User
 from app.schemas.schemas import (
     TransactionResponse,
     TransactionAddRequest,
@@ -25,6 +27,7 @@ def list_transactions_endpoint(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     result = list_transactions(
         db,
@@ -45,7 +48,7 @@ def list_transactions_endpoint(
 
 
 @router.get("/{tran_id}", response_model=TransactionResponse)
-def view_transaction_detail(tran_id: str, db: Session = Depends(get_db)):
+def view_transaction_detail(tran_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     transaction = get_transaction_detail(db, tran_id)
     return TransactionResponse.model_validate(transaction)
 
@@ -54,6 +57,7 @@ def view_transaction_detail(tran_id: str, db: Session = Depends(get_db)):
 def add_transaction_endpoint(
     request: TransactionAddRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     data = request.model_dump()
     transaction = add_transaction(db, data)
