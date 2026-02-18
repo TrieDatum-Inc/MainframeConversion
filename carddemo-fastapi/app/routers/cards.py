@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import get_current_user
+from app.models.models import User
 from app.schemas.schemas import (
     CardResponse,
     CardDetailResponse,
@@ -22,6 +24,7 @@ def list_cards_endpoint(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     result = list_cards(db, acct_id=acct_id, card_num=card_num, page=page, page_size=page_size)
     return PaginatedResponse(
@@ -38,6 +41,7 @@ def view_card_detail(
     card_num: str,
     acct_id: int = Query(..., gt=0),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     result = get_card_detail(db, acct_id, card_num)
     return CardDetailResponse(
@@ -52,6 +56,7 @@ def update_card_endpoint(
     card_num: str,
     request: CardUpdateRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     update_data = request.model_dump(exclude_unset=True)
     result = update_card(db, request.acct_id, card_num, update_data)

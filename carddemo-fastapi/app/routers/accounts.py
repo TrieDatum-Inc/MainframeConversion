@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import get_current_user
+from app.models.models import User
 from app.schemas.schemas import (
     AccountDetailResponse,
     AccountUpdateRequest,
@@ -14,7 +16,7 @@ router = APIRouter(prefix="/api/accounts", tags=["Accounts (COACTVWC, COACTUPC)"
 
 
 @router.get("/{acct_id}", response_model=AccountDetailResponse)
-def view_account(acct_id: int, db: Session = Depends(get_db)):
+def view_account(acct_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     result = get_account_view(db, acct_id)
     return AccountDetailResponse(
         account=AccountResponse.model_validate(result["account"]),
@@ -27,6 +29,7 @@ def update_account_endpoint(
     acct_id: int,
     request: AccountUpdateRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     update_data = request.model_dump(exclude_unset=True)
     result = update_account(db, acct_id, update_data)

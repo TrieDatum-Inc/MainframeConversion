@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import get_current_user
+from app.models.models import User
 from app.schemas.schemas import (
     AuthorizationRequest,
     AuthorizationResponse,
@@ -21,7 +23,7 @@ router = APIRouter(prefix="/api/authorizations", tags=["Authorizations (COPAUA0C
 
 
 @router.post("/process", response_model=AuthorizationResponse)
-def process_auth(request: AuthorizationRequest, db: Session = Depends(get_db)):
+def process_auth(request: AuthorizationRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     data = request.model_dump()
     return process_authorization(db, data)
 
@@ -32,6 +34,7 @@ def get_auth_summary(
     page: int = Query(1, ge=1),
     page_size: int = Query(5, ge=1, le=50),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     result = get_pending_auth_summary(db, acct_id, page=page, page_size=page_size)
     auths = []
@@ -87,11 +90,11 @@ def get_auth_summary(
 
 
 @router.get("/{auth_detail_id}", response_model=PendingAuthDetailResponse)
-def get_auth_detail_endpoint(auth_detail_id: int, db: Session = Depends(get_db)):
+def get_auth_detail_endpoint(auth_detail_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     detail = get_auth_detail(db, auth_detail_id)
     return PendingAuthDetailResponse.model_validate(detail)
 
 
 @router.put("/{auth_detail_id}/fraud", response_model=FraudToggleResponse)
-def toggle_fraud(auth_detail_id: int, db: Session = Depends(get_db)):
+def toggle_fraud(auth_detail_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return toggle_fraud_flag(db, auth_detail_id)
