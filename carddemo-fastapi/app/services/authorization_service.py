@@ -32,43 +32,44 @@ def process_authorization(db: Session, data: dict) -> dict:
             "05", DECLINE_REASONS["CARD_NOT_FOUND"], Decimal("0")
         )
 
+    decline_reason = None
+
     account = db.query(Account).filter(Account.acct_id == xref.acct_id).first()
     if not account:
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["ACCT_NOT_FOUND"], Decimal("0")
-        )
-
-    if account.active_status != "Y":
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["ACCOUNT_CLOSED"], Decimal("0")
-        )
+        decline_reason = "ACCT_NOT_FOUND"
+    elif account.active_status != "Y":
+        decline_reason = "ACCOUNT_CLOSED"
 
     customer = db.query(Customer).filter(Customer.cust_id == xref.cust_id).first()
-    if not customer:
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["CUST_NOT_FOUND"], Decimal("0")
-        )
+    if not customer and not decline_reason:
+        decline_reason = "CUST_NOT_FOUND"
 
-    auth_summary = db.query(PendingAuthSummary).filter(
-        PendingAuthSummary.acct_id == xref.acct_id
-    ).first()
+    if not decline_reason and account:
+        auth_summary = db.query(PendingAuthSummary).filter(
+            PendingAuthSummary.acct_id == xref.acct_id
+        ).first()
 
-    if auth_summary:
-        available_amt = auth_summary.credit_limit - auth_summary.credit_balance
+        if auth_summary:
+            available_amt = auth_summary.credit_limit - auth_summary.credit_balance
+        else:
+            available_amt = account.credit_limit - account.curr_bal
+
+        if transaction_amt > available_amt:
+            decline_reason = "INSUFFICIENT_FUND"
     else:
-        available_amt = account.credit_limit - account.curr_bal
+        auth_summary = db.query(PendingAuthSummary).filter(
+            PendingAuthSummary.acct_id == xref.acct_id
+        ).first()
 
-    if transaction_amt > available_amt:
+    if decline_reason:
         _update_auth_db(
             db, xref, account, auth_summary, data, auth_time,
-            approved=False, approved_amt=Decimal("0")
+            approved=False, approved_amt=Decimal("0"),
+            decline_reason=decline_reason
         )
         return _build_decline_response(
             card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["INSUFFICIENT_FUND"], Decimal("0")
+            "05", DECLINE_REASONS[decline_reason], Decimal("0")
         )
 
     _update_auth_db(
@@ -101,18 +102,22 @@ def _build_decline_response(
 
 
 def _update_auth_db(
-    db: Session, xref: CardXref, account: Account,
-    auth_summary: PendingAuthSummary, data: dict, auth_time: str,
-    approved: bool, approved_amt: Decimal
+    db: Session, xref: CardXref, account: Account | None,
+    auth_summary: PendingAuthSummary | None, data: dict, auth_time: str,
+    approved: bool, approved_amt: Decimal,
+    decline_reason: str | None = None
 ) -> None:
     transaction_amt = Decimal(str(data["transaction_amt"]))
+
+    credit_limit = account.credit_limit if account else Decimal("0")
+    cash_credit_limit = account.cash_credit_limit if account else Decimal("0")
 
     if not auth_summary:
         auth_summary = PendingAuthSummary(
             acct_id=xref.acct_id,
             cust_id=xref.cust_id,
-            credit_limit=account.credit_limit,
-            cash_limit=account.cash_credit_limit,
+            credit_limit=credit_limit,
+            cash_limit=cash_credit_limit,
             credit_balance=Decimal("0"),
             cash_balance=Decimal("0"),
             approved_auth_cnt=0,
@@ -123,8 +128,8 @@ def _update_auth_db(
         db.add(auth_summary)
         db.flush()
 
-    auth_summary.credit_limit = account.credit_limit
-    auth_summary.cash_limit = account.cash_credit_limit
+    auth_summary.credit_limit = credit_limit
+    auth_summary.cash_limit = cash_credit_limit
 
     if approved:
         auth_summary.approved_auth_cnt += 1
@@ -139,7 +144,7 @@ def _update_auth_db(
         auth_summary.declined_auth_amt += transaction_amt
         match_status = "AUTH-DECLINED"
         resp_code = "05"
-        resp_reason = DECLINE_REASONS["INSUFFICIENT_FUND"]
+        resp_reason = DECLINE_REASONS.get(decline_reason, DECLINE_REASONS["UNKNOWN"])
 
     detail = PendingAuthDetail(
         acct_id=xref.acct_id,
