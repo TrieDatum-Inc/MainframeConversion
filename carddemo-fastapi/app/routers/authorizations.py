@@ -7,14 +7,14 @@ from app.models.models import User
 from app.schemas.schemas import (
     AuthorizationRequest,
     AuthorizationResponse,
-    PendingAuthSummaryResponse,
-    PendingAuthDetailResponse,
+    AuthorizationSummaryResponse,
+    AuthorizationDetailResponse,
     FraudToggleRequest,
     FraudToggleResponse,
 )
 from app.services.authorization_service import (
     process_authorization,
-    get_pending_auth_summary,
+    get_auth_summary,
     get_auth_detail,
     toggle_fraud_flag,
 )
@@ -28,15 +28,15 @@ def process_auth(request: AuthorizationRequest, db: Session = Depends(get_db), c
     return process_authorization(db, data)
 
 
-@router.get("/accounts/{acct_id}", response_model=PendingAuthSummaryResponse)
-def get_auth_summary(
+@router.get("/accounts/{acct_id}", response_model=AuthorizationSummaryResponse)
+def get_authorization_summary(
     acct_id: int,
     page: int = Query(1, ge=1),
     page_size: int = Query(5, ge=1, le=50),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    result = get_pending_auth_summary(db, acct_id, page=page, page_size=page_size)
+    result = get_auth_summary(db, acct_id, page=page, page_size=page_size)
     auths = []
     for a in result["authorizations"]:
         auth_dict = {
@@ -71,7 +71,7 @@ def get_auth_summary(
         }
         auths.append(auth_dict)
 
-    return PendingAuthSummaryResponse(
+    return AuthorizationSummaryResponse(
         acct_id=result["acct_id"],
         cust_id=result["cust_id"],
         customer_name=result["customer_name"],
@@ -89,10 +89,10 @@ def get_auth_summary(
     )
 
 
-@router.get("/{auth_detail_id}", response_model=PendingAuthDetailResponse)
+@router.get("/{auth_detail_id}", response_model=AuthorizationDetailResponse)
 def get_auth_detail_endpoint(auth_detail_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     detail = get_auth_detail(db, auth_detail_id)
-    return PendingAuthDetailResponse.model_validate(detail)
+    return AuthorizationDetailResponse.model_validate(detail)
 
 
 @router.put("/{auth_detail_id}/fraud", response_model=FraudToggleResponse)
