@@ -5,7 +5,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "mysql+pymysql://root:password@localhost:3306/carddemo"
+    "mysql+pymysql://carddemo:carddemo12345@localhost:3306/carddemo"
 )
 
 SECRET_KEY = os.getenv("SECRET_KEY", "carddemo-secret-key-change-in-production")
