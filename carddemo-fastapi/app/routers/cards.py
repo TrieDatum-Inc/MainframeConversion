@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
+from app.utils.input_validations import validate_path_variable_acct_id, validate_path_variable_card_num, validate_optional_acct_id, validate_optional_card_num
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.models import User
@@ -19,8 +20,8 @@ router = APIRouter(prefix="/api/cards", tags=["Cards (COCRDLIC, COCRDSLC, COCRDU
 
 @router.get("", response_model=PaginatedResponse)
 def list_cards_endpoint(
-    acct_id: int = Query(None),
-    card_num: str = Query(None),
+    acct_id: str | None = Depends(validate_optional_acct_id),
+    card_num: str | None = Depends(validate_optional_card_num),
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
@@ -36,10 +37,10 @@ def list_cards_endpoint(
     )
 
 
-@router.get("/{card_num}", response_model=CardDetailResponse)
+@router.get("/{card_num}/{acct_id}", response_model=CardDetailResponse)
 def view_card_detail(
-    card_num: str,
-    acct_id: int = Query(..., gt=0),
+    card_num: str = Depends(validate_path_variable_card_num),
+    acct_id: str = Depends(validate_path_variable_acct_id),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -51,15 +52,16 @@ def view_card_detail(
     )
 
 
-@router.put("/{card_num}", response_model=CardDetailResponse)
+@router.put("/{card_num}/{acct_id}", response_model=CardDetailResponse)
 def update_card_endpoint(
-    card_num: str,
     request: CardUpdateRequest,
+    card_num: str = Depends(validate_path_variable_card_num),
+    acct_id: str = Depends(validate_path_variable_acct_id),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     update_data = request.model_dump(exclude_unset=True)
-    result = update_card(db, request.acct_id, card_num, update_data)
+    result = update_card(db, acct_id, card_num, update_data)
     return CardDetailResponse(
         card=CardResponse.model_validate(result["card"]),
         account=AccountResponse.model_validate(result["account"]) if result["account"] else None,

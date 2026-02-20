@@ -34,7 +34,7 @@ def process_bill_payment(db: Session, acct_id: int) -> dict:
 
     payment_tran = Transaction(
         tran_id=tran_id,
-        type_cd="01",
+        type_cd="00",
         cat_cd=0,
         source="BILL-PAY",
         description=f"Bill payment for account {acct_id}",

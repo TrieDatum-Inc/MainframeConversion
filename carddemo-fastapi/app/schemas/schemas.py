@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from decimal import Decimal
+from datetime import datetime
 
 
 class SignonRequest(BaseModel):
@@ -437,7 +438,7 @@ class PendingAuthDetailResponse(BaseModel):
     fraud_confirmed: Optional[str] = None
     fraud_rpt_date: Optional[str] = None
     match_status: Optional[str] = None
-    created_at: Optional[str] = None
+    created_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
 

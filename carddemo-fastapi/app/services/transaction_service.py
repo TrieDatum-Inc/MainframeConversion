@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 import uuid
 from sqlalchemy.orm import Session
@@ -93,7 +93,41 @@ def add_transaction(db: Session, data: dict) -> Transaction:
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Account: {data['acct_id']} not found in account master"
         )
+    expiration_date_str = account.expiration_date
+    expiration_date = datetime.strptime(
+        expiration_date_str, "%Y-%m-%d"
+    ).date()
+    today = date.today()
 
+    if expiration_date < today:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Account {data['acct_id']} is expired"
+        )
+    trans_amt = data['amount']
+    projected_balance = (
+        account.curr_cyc_credit
+        - account.curr_cyc_debit
+        + trans_amt
+    )
+
+    if projected_balance > account.credit_limit:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="TRANSACTION AMOUNT EXCEEDS CREDIT LIMIT"
+        )
+    curr_bal = account.curr_bal + trans_amt
+    curr_cyc_credit = account.curr_cyc_credit
+    curr_cyc_debit = account.curr_cyc_debit
+    if trans_amt>=0:
+        curr_cyc_credit = curr_cyc_credit + trans_amt
+    else:
+        curr_cyc_debit = curr_cyc_debit + trans_amt
+
+    setattr(account, 'curr_bal', curr_bal)
+    setattr(account, 'curr_cyc_credit', curr_cyc_credit)
+    setattr(account, 'curr_cyc_debit', curr_cyc_debit)
+    
     tran_id = f"T{uuid.uuid4().hex[:15].upper()}"
     now_ts = datetime.now().strftime("%Y-%m-%d-%H.%M.%S.%f")
 
@@ -116,4 +150,5 @@ def add_transaction(db: Session, data: dict) -> Transaction:
     db.add(transaction)
     db.commit()
     db.refresh(transaction)
+    db.refresh(account)
     return transaction
