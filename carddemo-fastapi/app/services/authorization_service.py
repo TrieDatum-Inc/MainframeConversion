@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
 from app.models.models import (
-    CardXref, Account, Customer, PendingAuthSummary, PendingAuthDetail,
+    CardXref, Account, Customer, AuthorizationSummary, AuthorizationDetail,
 )
 
 DECLINE_REASONS = {
@@ -32,43 +32,44 @@ def process_authorization(db: Session, data: dict) -> dict:
             "05", DECLINE_REASONS["CARD_NOT_FOUND"], Decimal("0")
         )
 
+    decline_reason = None
+
     account = db.query(Account).filter(Account.acct_id == xref.acct_id).first()
     if not account:
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["ACCT_NOT_FOUND"], Decimal("0")
-        )
-
-    if account.active_status != "Y":
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["ACCOUNT_CLOSED"], Decimal("0")
-        )
+        decline_reason = "ACCT_NOT_FOUND"
+    elif account.active_status != "Y":
+        decline_reason = "ACCOUNT_CLOSED"
 
     customer = db.query(Customer).filter(Customer.cust_id == xref.cust_id).first()
-    if not customer:
-        return _build_decline_response(
-            card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["CUST_NOT_FOUND"], Decimal("0")
-        )
+    if not customer and not decline_reason:
+        decline_reason = "CUST_NOT_FOUND"
 
-    auth_summary = db.query(PendingAuthSummary).filter(
-        PendingAuthSummary.acct_id == xref.acct_id
-    ).first()
+    if not decline_reason and account:
+        auth_summary = db.query(AuthorizationSummary).filter(
+            AuthorizationSummary.acct_id == xref.acct_id
+        ).first()
 
-    if auth_summary:
-        available_amt = auth_summary.credit_limit - auth_summary.credit_balance
+        if auth_summary:
+            available_amt = auth_summary.credit_limit - auth_summary.credit_balance
+        else:
+            available_amt = account.credit_limit - account.curr_bal
+
+        if transaction_amt > available_amt:
+            decline_reason = "INSUFFICIENT_FUND"
     else:
-        available_amt = account.credit_limit - account.curr_bal
+        auth_summary = db.query(AuthorizationSummary).filter(
+            AuthorizationSummary.acct_id == xref.acct_id
+        ).first()
 
-    if transaction_amt > available_amt:
+    if decline_reason:
         _update_auth_db(
             db, xref, account, auth_summary, data, auth_time,
-            approved=False, approved_amt=Decimal("0")
+            approved=False, approved_amt=Decimal("0"),
+            decline_reason=decline_reason
         )
         return _build_decline_response(
             card_num, data.get("transaction_id"), auth_time,
-            "05", DECLINE_REASONS["INSUFFICIENT_FUND"], Decimal("0")
+            "05", DECLINE_REASONS[decline_reason], Decimal("0")
         )
 
     _update_auth_db(
@@ -101,18 +102,22 @@ def _build_decline_response(
 
 
 def _update_auth_db(
-    db: Session, xref: CardXref, account: Account,
-    auth_summary: PendingAuthSummary, data: dict, auth_time: str,
-    approved: bool, approved_amt: Decimal
+    db: Session, xref: CardXref, account: Account | None,
+    auth_summary: AuthorizationSummary | None, data: dict, auth_time: str,
+    approved: bool, approved_amt: Decimal,
+    decline_reason: str | None = None
 ) -> None:
     transaction_amt = Decimal(str(data["transaction_amt"]))
 
+    credit_limit = account.credit_limit if account else Decimal("0")
+    cash_credit_limit = account.cash_credit_limit if account else Decimal("0")
+
     if not auth_summary:
-        auth_summary = PendingAuthSummary(
+        auth_summary = AuthorizationSummary(
             acct_id=xref.acct_id,
             cust_id=xref.cust_id,
-            credit_limit=account.credit_limit,
-            cash_limit=account.cash_credit_limit,
+            credit_limit=credit_limit,
+            cash_limit=cash_credit_limit,
             credit_balance=Decimal("0"),
             cash_balance=Decimal("0"),
             approved_auth_cnt=0,
@@ -123,8 +128,8 @@ def _update_auth_db(
         db.add(auth_summary)
         db.flush()
 
-    auth_summary.credit_limit = account.credit_limit
-    auth_summary.cash_limit = account.cash_credit_limit
+    auth_summary.credit_limit = credit_limit
+    auth_summary.cash_limit = cash_credit_limit
 
     if approved:
         auth_summary.approved_auth_cnt += 1
@@ -139,9 +144,9 @@ def _update_auth_db(
         auth_summary.declined_auth_amt += transaction_amt
         match_status = "AUTH-DECLINED"
         resp_code = "05"
-        resp_reason = DECLINE_REASONS["INSUFFICIENT_FUND"]
+        resp_reason = DECLINE_REASONS.get(decline_reason, DECLINE_REASONS["UNKNOWN"])
 
-    detail = PendingAuthDetail(
+    detail = AuthorizationDetail(
         acct_id=xref.acct_id,
         card_num=data["card_num"],
         auth_date=data.get("auth_date"),
@@ -173,7 +178,7 @@ def _update_auth_db(
     db.commit()
 
 
-def get_pending_auth_summary(
+def get_auth_summary(
     db: Session, acct_id: int, page: int = 1, page_size: int = 5
 ) -> dict:
     xref = db.query(CardXref).filter(CardXref.acct_id == acct_id).first()
@@ -202,8 +207,8 @@ def get_pending_auth_summary(
             parts.append(customer.last_name.strip())
         customer_name = " ".join(parts)
 
-    auth_summary = db.query(PendingAuthSummary).filter(
-        PendingAuthSummary.acct_id == acct_id
+    auth_summary = db.query(AuthorizationSummary).filter(
+        AuthorizationSummary.acct_id == acct_id
     ).first()
 
     summary_data = {
@@ -231,9 +236,9 @@ def get_pending_auth_summary(
         })
 
     offset = (page - 1) * page_size
-    details = db.query(PendingAuthDetail).filter(
-        PendingAuthDetail.acct_id == acct_id
-    ).order_by(PendingAuthDetail.id.desc()).offset(offset).limit(page_size + 1).all()
+    details = db.query(AuthorizationDetail).filter(
+        AuthorizationDetail.acct_id == acct_id
+    ).order_by(AuthorizationDetail.id.desc()).offset(offset).limit(page_size + 1).all()
 
     has_more = len(details) > page_size
     if has_more:
@@ -246,9 +251,9 @@ def get_pending_auth_summary(
     return summary_data
 
 
-def get_auth_detail(db: Session, auth_detail_id: int) -> PendingAuthDetail:
-    detail = db.query(PendingAuthDetail).filter(
-        PendingAuthDetail.id == auth_detail_id
+def get_auth_detail(db: Session, auth_detail_id: int) -> AuthorizationDetail:
+    detail = db.query(AuthorizationDetail).filter(
+        AuthorizationDetail.id == auth_detail_id
     ).first()
     if not detail:
         raise HTTPException(
@@ -259,8 +264,8 @@ def get_auth_detail(db: Session, auth_detail_id: int) -> PendingAuthDetail:
 
 
 def toggle_fraud_flag(db: Session, auth_detail_id: int) -> dict:
-    detail = db.query(PendingAuthDetail).filter(
-        PendingAuthDetail.id == auth_detail_id
+    detail = db.query(AuthorizationDetail).filter(
+        AuthorizationDetail.id == auth_detail_id
     ).first()
     if not detail:
         raise HTTPException(

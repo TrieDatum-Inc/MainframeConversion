@@ -97,8 +97,8 @@ class TransactionType(Base):
     type_description = Column(String(50), nullable=True)
 
 
-class PendingAuthSummary(Base):
-    __tablename__ = "pending_auth_summary"
+class AuthorizationSummary(Base):
+    __tablename__ = "authorization_summary"
 
     acct_id = Column(BigInteger, primary_key=True, index=True)
     cust_id = Column(BigInteger, nullable=True)
@@ -112,11 +112,11 @@ class PendingAuthSummary(Base):
     declined_auth_amt = Column(Numeric(12, 2), nullable=False, default=0)
 
 
-class PendingAuthDetail(Base):
-    __tablename__ = "pending_auth_details"
+class AuthorizationDetail(Base):
+    __tablename__ = "authorization_details"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    acct_id = Column(BigInteger, ForeignKey("pending_auth_summary.acct_id"), nullable=False, index=True)
+    acct_id = Column(BigInteger, ForeignKey("authorization_summary.acct_id"), nullable=False, index=True)
     card_num = Column(String(16), nullable=False)
     auth_date = Column(String(10), nullable=True)
     auth_time = Column(String(10), nullable=True)

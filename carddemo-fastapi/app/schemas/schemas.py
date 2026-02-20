@@ -380,7 +380,7 @@ class AuthorizationResponse(BaseModel):
     approved_amt: Decimal
 
 
-class PendingAuthSummaryRequest(BaseModel):
+class AuthorizationSummaryRequest(BaseModel):
     acct_id: int = Field(..., gt=0)
     page: int = Field(1, ge=1)
     page_size: int = Field(5, ge=1, le=50)
@@ -393,7 +393,7 @@ class PendingAuthSummaryRequest(BaseModel):
         return v
 
 
-class PendingAuthSummaryResponse(BaseModel):
+class AuthorizationSummaryResponse(BaseModel):
     acct_id: int
     cust_id: Optional[int] = None
     customer_name: Optional[str] = None
@@ -410,7 +410,7 @@ class PendingAuthSummaryResponse(BaseModel):
     has_more: bool = False
 
 
-class PendingAuthDetailResponse(BaseModel):
+class AuthorizationDetailResponse(BaseModel):
     id: int
     acct_id: int
     card_num: str

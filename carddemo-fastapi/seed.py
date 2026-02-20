@@ -29,8 +29,8 @@ from app.models.models import (
     Transaction,
     User,
     TransactionType,
-    PendingAuthSummary,
-    PendingAuthDetail,
+    AuthorizationSummary,
+    AuthorizationDetail,
 )
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
@@ -307,14 +307,14 @@ def seed_transaction_types(db):
 
 def seed_pending_auth_summary(db):
     summaries = [
-        PendingAuthSummary(
+        AuthorizationSummary(
             acct_id=10000000001, cust_id=100000001,
             credit_limit=Decimal("5000.00"), cash_limit=Decimal("1500.00"),
             credit_balance=Decimal("1250.75"), cash_balance=Decimal("0.00"),
             approved_auth_cnt=3, approved_auth_amt=Decimal("350.00"),
             declined_auth_cnt=1, declined_auth_amt=Decimal("6000.00"),
         ),
-        PendingAuthSummary(
+        AuthorizationSummary(
             acct_id=10000000002, cust_id=100000002,
             credit_limit=Decimal("10000.00"), cash_limit=Decimal("3000.00"),
             credit_balance=Decimal("3456.89"), cash_balance=Decimal("0.00"),
@@ -330,7 +330,7 @@ def seed_pending_auth_summary(db):
 
 def seed_pending_auth_details(db):
     details = [
-        PendingAuthDetail(
+        AuthorizationDetail(
             acct_id=10000000001, card_num="4111111111111111",
             auth_date="2025-01-25", auth_time="10:30:00",
             auth_type="01", auth_id_code="AUTH000001",
@@ -345,7 +345,7 @@ def seed_pending_auth_details(db):
             acqr_country_code="840",
             fraud_confirmed=" ", fraud_rpt_date="", match_status="PENDING",
         ),
-        PendingAuthDetail(
+        AuthorizationDetail(
             acct_id=10000000001, card_num="4111111111111111",
             auth_date="2025-01-25", auth_time="14:15:00",
             auth_type="01", auth_id_code="AUTH000002",
@@ -360,7 +360,7 @@ def seed_pending_auth_details(db):
             acqr_country_code="840",
             fraud_confirmed=" ", fraud_rpt_date="", match_status="PENDING",
         ),
-        PendingAuthDetail(
+        AuthorizationDetail(
             acct_id=10000000001, card_num="4222222222222222",
             auth_date="2025-01-26", auth_time="09:00:00",
             auth_type="01", auth_id_code="AUTH000003",
@@ -375,7 +375,7 @@ def seed_pending_auth_details(db):
             acqr_country_code="840",
             fraud_confirmed=" ", fraud_rpt_date="", match_status="PENDING",
         ),
-        PendingAuthDetail(
+        AuthorizationDetail(
             acct_id=10000000001, card_num="4111111111111111",
             auth_date="2025-01-26", auth_time="16:00:00",
             auth_type="01", auth_id_code="AUTH000004",
@@ -390,7 +390,7 @@ def seed_pending_auth_details(db):
             acqr_country_code="840",
             fraud_confirmed=" ", fraud_rpt_date="", match_status="AUTH-DECLINED",
         ),
-        PendingAuthDetail(
+        AuthorizationDetail(
             acct_id=10000000002, card_num="5333333333333333",
             auth_date="2025-01-27", auth_time="11:00:00",
             auth_type="01", auth_id_code="AUTH000005",
