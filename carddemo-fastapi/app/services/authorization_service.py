@@ -7,37 +7,49 @@ from app.models.models import (
     CardXref, Account, Customer, PendingAuthSummary, PendingAuthDetail,
 )
 
+DECLINE_REASONS = {
+    "CARD_NOT_FOUND": "3100",
+    "ACCT_NOT_FOUND": "3100",
+    "CUST_NOT_FOUND": "3100",
+    "INSUFFICIENT_FUND": "4100",
+    "CARD_NOT_ACTIVE": "4200",
+    "ACCOUNT_CLOSED": "4300",
+    "CARD_FRAUD": "5100",
+    "MERCHANT_FRAUD": "5200",
+    "UNKNOWN": "9000",
+}
 
 
 def process_authorization(db: Session, data: dict) -> dict:
     card_num = data["card_num"]
     transaction_amt = Decimal(str(data["transaction_amt"]))
+    auth_time = data["auth_time"]
 
     xref = db.query(CardXref).filter(CardXref.card_num == card_num).first()
     if not xref:
         return _build_decline_response(
-            card_num, data.get("transaction_id"), "Unauthorized",
-            "05", "CDNF", Decimal("0")
+            card_num, data.get("transaction_id"), auth_time,
+            "05", DECLINE_REASONS["CARD_NOT_FOUND"], Decimal("0")
         )
 
     account = db.query(Account).filter(Account.acct_id == xref.acct_id).first()
     if not account:
         return _build_decline_response(
-            card_num, data.get("transaction_id"), "Unauthorized",
-            "05", "ACNF", Decimal("0")
+            card_num, data.get("transaction_id"), auth_time,
+            "05", DECLINE_REASONS["ACCT_NOT_FOUND"], Decimal("0")
         )
 
     if account.active_status != "Y":
         return _build_decline_response(
-            card_num, data.get("transaction_id"), "Unauthorized",
-            "05", "ACCL", Decimal("0")
+            card_num, data.get("transaction_id"), auth_time,
+            "05", DECLINE_REASONS["ACCOUNT_CLOSED"], Decimal("0")
         )
 
     customer = db.query(Customer).filter(Customer.cust_id == xref.cust_id).first()
     if not customer:
         return _build_decline_response(
-            card_num, data.get("transaction_id"), "Unauthorized",
-            "05", "CUNF", Decimal("0")
+            card_num, data.get("transaction_id"), auth_time,
+            "05", DECLINE_REASONS["CUST_NOT_FOUND"], Decimal("0")
         )
 
     auth_summary = db.query(PendingAuthSummary).filter(
@@ -51,23 +63,23 @@ def process_authorization(db: Session, data: dict) -> dict:
 
     if transaction_amt > available_amt:
         _update_auth_db(
-            db, xref, account, auth_summary, data, "DECLINED",
+            db, xref, account, auth_summary, data, auth_time,
             approved=False, approved_amt=Decimal("0")
         )
         return _build_decline_response(
-            card_num, data.get("transaction_id"), "DECLINED",
-            "05", "INSF", Decimal("0")
+            card_num, data.get("transaction_id"), auth_time,
+            "05", DECLINE_REASONS["INSUFFICIENT_FUND"], Decimal("0")
         )
 
     _update_auth_db(
-        db, xref, account, auth_summary, data, "APPROVED",
+        db, xref, account, auth_summary, data, auth_time,
         approved=True, approved_amt=transaction_amt
     )
 
     return {
         "card_num": card_num,
         "transaction_id": data.get("transaction_id"),
-        "auth_id_code": "APPROVED",
+        "auth_id_code": auth_time,
         "auth_resp_code": "00",
         "auth_resp_reason": "0000",
         "approved_amt": transaction_amt,
@@ -127,7 +139,7 @@ def _update_auth_db(
         auth_summary.declined_auth_amt += transaction_amt
         match_status = "AUTH-DECLINED"
         resp_code = "05"
-        resp_reason = "INSF"
+        resp_reason = DECLINE_REASONS["INSUFFICIENT_FUND"]
 
     detail = PendingAuthDetail(
         acct_id=xref.acct_id,
