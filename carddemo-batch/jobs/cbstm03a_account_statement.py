@@ -25,6 +25,11 @@ Note: The original COBOL program has no date filter. It processes ALL
       In the modernized pipeline, an optional date range parameter is provided
       to replicate this pre-filtering.
 
+Idempotency:
+  - This is a read-only report job; it does not write to any Delta table
+  - CSV output uses mode("overwrite"), so re-runs replace previous output
+  - Safe to run multiple times with the same parameters
+
 Delta tables read: card_xref, customer, account, transaction
 Output: CSV files (plain-text statement data + HTML statement files)
 """

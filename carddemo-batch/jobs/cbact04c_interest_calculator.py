@@ -9,7 +9,7 @@ Business Logic (exact replica of COBOL):
   1. Read tran_cat_bal sequentially (ordered by acct_id)
   2. For each account (when acct_id changes):
      a. Read the account record from account table
-     b. Read the card_xref record to get group_id linkage
+     b. Use account.group_id to look up interest rates
   3. For each tran_cat_bal row:
      a. Look up the interest rate from disclosure_group using
         (account.group_id, tran_type_cd, tran_cat_cd)
@@ -24,6 +24,15 @@ Business Logic (exact replica of COBOL):
      a. Update account: curr_bal += total_interest
      b. Reset curr_cyc_credit = 0, curr_cyc_debit = 0
   5. 1400-COMPUTE-FEES is a stub in COBOL ("To be implemented")
+
+Idempotency:
+  - Interest transaction IDs are deterministic: {parm_date}{sequence}
+  - Before writing, existing interest txns for the same parm_date are checked
+  - If already run for parm_date, the job skips with a message
+  - Account updates use Delta MERGE (not overwrite) so re-runs are safe
+
+Fix from v1: card_xref join used one card per account (first card_num) to
+  prevent duplicate interest when an account has multiple cards.
 
 Input parameter: parm_date (YYYY-MM-DD) used to construct interest tran_id
 
@@ -41,6 +50,8 @@ from pyspark.sql import types as T
 sys.path.insert(0, "..")
 from utils.spark_utils import get_spark_session, get_db_prefix
 
+INTEREST_TRAN_ID_PREFIX_FORMAT = "%Y%m%d"
+
 
 def run(
     parm_date: str = "",
@@ -53,21 +64,38 @@ def run(
     if not parm_date:
         parm_date = datetime.now().strftime("%Y-%m-%d")
 
+    run_prefix = parm_date.replace("-", "")
     now_ts = datetime.now().strftime("%Y-%m-%d-%H.%M.%S.%f")
 
     print("START OF EXECUTION OF PROGRAM CBACT04C")
+
+    existing_txn_df = spark.table(f"{db}.transaction")
+    already_run = existing_txn_df.filter(
+        F.col("tran_id").startswith(run_prefix)
+        & (F.col("tran_source") == "System")
+        & F.col("tran_desc").startswith("Int. for a/c")
+    ).count()
+
+    if already_run > 0:
+        print(f"ALREADY PROCESSED FOR {parm_date}: {already_run} interest txns exist. SKIPPING.")
+        print("END OF EXECUTION OF PROGRAM CBACT04C")
+        return {"return_code": 0, "records_processed": 0, "skipped": True}
 
     tcatbal_df = spark.table(f"{db}.tran_cat_bal")
     account_df = spark.table(f"{db}.account")
     xref_df = spark.table(f"{db}.card_xref")
     discgrp_df = spark.table(f"{db}.disclosure_group")
 
+    first_card_per_acct = xref_df.groupBy("acct_id").agg(
+        F.first("card_num").alias("card_num")
+    )
+
     tcatbal_with_acct = tcatbal_df.alias("tc").join(
         account_df.alias("ac"),
         F.col("tc.acct_id") == F.col("ac.acct_id"),
         "inner",
     ).join(
-        xref_df.alias("xr"),
+        first_card_per_acct.alias("xr"),
         F.col("tc.acct_id") == F.col("xr.acct_id"),
         "inner",
     ).select(
@@ -127,7 +155,7 @@ def run(
         ).withColumn(
             "tran_id",
             F.concat(
-                F.lit(parm_date.replace("-", "")),
+                F.lit(run_prefix),
                 F.lpad(F.col("row_num").cast("string"), 6, "0"),
             ),
         )
@@ -148,48 +176,35 @@ def run(
             F.lit(now_ts).alias("proc_ts"),
         )
 
-        interest_txns.write.format("delta").mode("append").saveAsTable(
-            f"{db}.transaction"
-        )
+        interest_txns.createOrReplaceTempView("_cbact04c_interest_txns")
+
+        spark.sql(f"""
+            MERGE INTO {db}.transaction AS tgt
+            USING _cbact04c_interest_txns AS src
+            ON tgt.tran_id = src.tran_id
+            WHEN NOT MATCHED THEN INSERT *
+        """)
 
         total_interest_per_acct = with_interest.groupBy("acct_id").agg(
             F.sum("monthly_interest").alias("total_interest")
         )
 
-        updated_accounts = account_df.alias("ac").join(
-            total_interest_per_acct.alias("ti"),
-            F.col("ac.acct_id") == F.col("ti.acct_id"),
-            "left",
-        ).select(
-            F.col("ac.acct_id"),
-            F.col("ac.active_status"),
-            F.when(
-                F.col("ti.total_interest").isNotNull(),
-                F.col("ac.curr_bal") + F.col("ti.total_interest"),
-            ).otherwise(F.col("ac.curr_bal")).alias("curr_bal"),
-            F.col("ac.credit_limit"),
-            F.col("ac.cash_credit_limit"),
-            F.col("ac.open_date"),
-            F.col("ac.expiration_date"),
-            F.col("ac.reissue_date"),
-            F.when(
-                F.col("ti.total_interest").isNotNull(), F.lit(0).cast("decimal(12,2)")
-            ).otherwise(F.col("ac.curr_cyc_credit")).alias("curr_cyc_credit"),
-            F.when(
-                F.col("ti.total_interest").isNotNull(), F.lit(0).cast("decimal(12,2)")
-            ).otherwise(F.col("ac.curr_cyc_debit")).alias("curr_cyc_debit"),
-            F.col("ac.addr_zip"),
-            F.col("ac.group_id"),
-        )
+        total_interest_per_acct.createOrReplaceTempView("_cbact04c_acct_interest")
 
-        updated_accounts.write.format("delta").mode("overwrite").option(
-            "overwriteSchema", "true"
-        ).saveAsTable(f"{db}.account")
+        spark.sql(f"""
+            MERGE INTO {db}.account AS tgt
+            USING _cbact04c_acct_interest AS src
+            ON tgt.acct_id = src.acct_id
+            WHEN MATCHED THEN UPDATE SET
+                tgt.curr_bal = tgt.curr_bal + src.total_interest,
+                tgt.curr_cyc_credit = 0,
+                tgt.curr_cyc_debit = 0
+        """)
 
     print(f"RECORDS PROCESSED: {record_count}")
     print("END OF EXECUTION OF PROGRAM CBACT04C")
 
-    return {"return_code": 0, "records_processed": record_count}
+    return {"return_code": 0, "records_processed": record_count, "skipped": False}
 
 
 if __name__ == "__main__":
