@@ -24,6 +24,11 @@ Business Logic (exact replica of COBOL):
      - Grand total at end
   6. Output: CSV file with the report data
 
+Idempotency:
+  - This is a read-only report job; it does not write to any Delta table
+  - CSV output uses mode("overwrite"), so re-runs replace previous output
+  - Safe to run multiple times with the same parameters
+
 Delta tables read: transaction, card_xref, transaction_type, transaction_category
 Output: CSV file
 """
