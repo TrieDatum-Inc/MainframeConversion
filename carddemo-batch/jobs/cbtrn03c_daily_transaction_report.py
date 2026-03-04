@@ -64,7 +64,7 @@ def run(
     print("START OF EXECUTION OF PROGRAM CBTRN03C")
     print(f"Reporting from {start_date} to {end_date}")
 
-    txn_df = spark.table(f"{db}.transaction")
+    txn_df = spark.table(f"{db}.transactions")
     xref_df = spark.table(f"{db}.card_xref")
     ttype_df = spark.table(f"{db}.transaction_type")
     tcat_df = spark.table(f"{db}.transaction_category")

@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS account (
     group_id            STRING
 )
 USING DELTA
-TBLPROPERTIES ('delta.enableChangeDataFeed' = 'true');
+TBLPROPERTIES ('delta.enableChangeDataFeed' = 'true',
+'delta.feature.allowColumnDefaults' = 'supported');
 
 -- -----------------------------------------------------------------------------
 -- CUSTOMER (Copybook: CUSTREC, RECLN 500)

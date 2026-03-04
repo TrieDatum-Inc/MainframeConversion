@@ -15,6 +15,6 @@ def get_spark_session(app_name: str) -> SparkSession:
 
 
 def get_db_prefix(catalog: str, database: str) -> str:
-    if catalog:
-        return f"{catalog}.{database}"
+    #if catalog:
+        #return f"{catalog}.{database}"
     return database

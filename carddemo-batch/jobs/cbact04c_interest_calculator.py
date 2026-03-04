@@ -44,7 +44,8 @@ import sys
 from datetime import datetime
 
 from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+import pyspark.sql.functions as F
 from pyspark.sql import types as T
 
 sys.path.insert(0, "..")
@@ -69,7 +70,7 @@ def run(
 
     print("START OF EXECUTION OF PROGRAM CBACT04C")
 
-    existing_txn_df = spark.table(f"{db}.transaction")
+    existing_txn_df = spark.table(f"{db}.transactions")
     already_run = existing_txn_df.filter(
         F.col("tran_id").startswith(run_prefix)
         & (F.col("tran_source") == "System")
@@ -150,7 +151,7 @@ def run(
         interest_with_id = with_interest.withColumn(
             "row_num",
             F.row_number().over(
-                F.Window.orderBy("acct_id", "tran_type_cd", "tran_cat_cd")
+                Window.orderBy("acct_id", "tran_type_cd", "tran_cat_cd")
             ),
         ).withColumn(
             "tran_id",
@@ -179,7 +180,7 @@ def run(
         interest_txns.createOrReplaceTempView("_cbact04c_interest_txns")
 
         spark.sql(f"""
-            MERGE INTO {db}.transaction AS tgt
+            MERGE INTO {db}.transactions AS tgt
             USING _cbact04c_interest_txns AS src
             ON tgt.tran_id = src.tran_id
             WHEN NOT MATCHED THEN INSERT *

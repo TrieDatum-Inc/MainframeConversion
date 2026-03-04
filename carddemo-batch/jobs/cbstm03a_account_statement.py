@@ -53,7 +53,6 @@ def _build_html_statement(
     addr_line1: str,
     addr_line2: str,
     addr_line3: str,
-    city: str,
     state: str,
     zipcode: str,
     acct_id: int,
@@ -85,7 +84,7 @@ def _build_html_statement(
         lines.append(f"{html_escape(addr_line2)}<br>")
     if addr_line3:
         lines.append(f"{html_escape(addr_line3)}<br>")
-    lines.append(f"{html_escape(city)}, {html_escape(state)} {html_escape(zipcode)}</p>")
+    lines.append(f" {html_escape(state)} {html_escape(zipcode)}</p>")
     lines.append(f"<p>Account: {acct_id} &nbsp; Card: {html_escape(card_num)} &nbsp; Date: {stmt_date}</p>")
     lines.append("<table><tr>")
     for hdr in ["Date", "Tran ID", "Type", "Category", "Source", "Description", "Amount"]:
@@ -131,7 +130,7 @@ def run(
     xref_df = spark.table(f"{db}.card_xref")
     cust_df = spark.table(f"{db}.customer")
     acct_df = spark.table(f"{db}.account")
-    txn_df = spark.table(f"{db}.transaction")
+    txn_df = spark.table(f"{db}.transactions")
 
     if start_date and end_date:
         txn_df = txn_df.filter(
@@ -147,14 +146,13 @@ def run(
             F.col("xr.card_num"),
             F.col("xr.acct_id"),
             F.col("xr.cust_id"),
-            F.col("cu.cust_first_name"),
-            F.col("cu.cust_last_name"),
-            F.col("cu.cust_addr_line_1"),
-            F.col("cu.cust_addr_line_2"),
-            F.col("cu.cust_addr_line_3"),
-            F.col("cu.cust_addr_city"),
-            F.col("cu.cust_addr_state_cd"),
-            F.col("cu.cust_addr_zip"),
+            F.col("cu.first_name"),
+            F.col("cu.last_name"),
+            F.col("cu.addr_line_1"),
+            F.col("cu.addr_line_2"),
+            F.col("cu.addr_line_3"),
+            F.col("cu.addr_state_cd"),
+            F.col("cu.addr_zip"),
             F.col("ac.curr_bal"),
             F.col("ac.credit_limit"),
         )
@@ -168,8 +166,8 @@ def run(
     for stmt in stmt_records:
         card_num = stmt["card_num"]
         acct_id = stmt["acct_id"]
-        cust_first = stmt["cust_first_name"] or ""
-        cust_last = stmt["cust_last_name"] or ""
+        cust_first = stmt["first_name"] or ""
+        cust_last = stmt["last_name"] or ""
         curr_bal = float(stmt["curr_bal"] or 0)
         credit_limit = float(stmt["credit_limit"] or 0)
 
@@ -225,12 +223,11 @@ def run(
         html_content = _build_html_statement(
             cust_first=cust_first,
             cust_last=cust_last,
-            addr_line1=stmt["cust_addr_line_1"] or "",
-            addr_line2=stmt["cust_addr_line_2"] or "",
-            addr_line3=stmt["cust_addr_line_3"] or "",
-            city=stmt["cust_addr_city"] or "",
-            state=stmt["cust_addr_state_cd"] or "",
-            zipcode=stmt["cust_addr_zip"] or "",
+            addr_line1=stmt["addr_line_1"] or "",
+            addr_line2=stmt["addr_line_2"] or "",
+            addr_line3=stmt["addr_line_3"] or "",
+            state=stmt["addr_state_cd"] or "",
+            zipcode=stmt["addr_zip"] or "",
             acct_id=acct_id,
             card_num=card_num,
             stmt_date=stmt_date,
