@@ -1,16 +1,1182 @@
 {
-  "total": 0,
+  "total": 26,
   "p": 1,
   "ps": 100,
   "paging": {
     "pageIndex": 1,
     "pageSize": 100,
-    "total": 0
+    "total": 26
   },
-  "effortTotal": 0,
-  "debtTotal": 0,
-  "issues": [],
-  "components": [],
-  "organizations": [],
+  "effortTotal": 231,
+  "debtTotal": 231,
+  "issues": [
+    {
+      "key": "AZ0pl909TiLYW-eKL9lz",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 27,
+      "hash": "b6f9647ad84e7ff96edfb510d3cbc6c2",
+      "textRange": {
+        "startLine": 27,
+        "endLine": 27,
+        "startOffset": 15,
+        "endOffset": 39
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl909TiLYW-eKL9l0",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 33,
+      "hash": "086418dd758dac6ff89e2916144db4ce",
+      "textRange": {
+        "startLine": 33,
+        "endLine": 33,
+        "startOffset": 15,
+        "endOffset": 38
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl909TiLYW-eKL9l1",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 39,
+      "hash": "77fd1ccc1e0e44534347a067de0ee1d7",
+      "textRange": {
+        "startLine": 39,
+        "endLine": 39,
+        "startOffset": 15,
+        "endOffset": 41
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl909TiLYW-eKL9l2",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 45,
+      "hash": "8180f8650bb38679f6074aa9a655dbe5",
+      "textRange": {
+        "startLine": 45,
+        "endLine": 45,
+        "startOffset": 15,
+        "endOffset": 38
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl909TiLYW-eKL9l3",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 79,
+      "hash": "c4306c16a2576bba29355d5658202674",
+      "textRange": {
+        "startLine": 79,
+        "endLine": 79,
+        "startOffset": 15,
+        "endOffset": 32
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl909TiLYW-eKL9l4",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 80,
+      "hash": "2940440bd0d4fca874d5d8628e4f72ac",
+      "textRange": {
+        "startLine": 80,
+        "endLine": 80,
+        "startOffset": 15,
+        "endOffset": 32
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9ls",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 60,
+      "hash": "1e7a23f936cd6c722a562d23058d921c",
+      "textRange": {
+        "startLine": 60,
+        "endLine": 60,
+        "startOffset": 15,
+        "endOffset": 46
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9lt",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 61,
+      "hash": "bfed4553806323a0fedc8c0913288fa9",
+      "textRange": {
+        "startLine": 61,
+        "endLine": 61,
+        "startOffset": 15,
+        "endOffset": 54
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9lu",
+      "rule": "python:S1940",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 69,
+      "hash": "24ebcff7ce7761fb917e02ef0749083d",
+      "textRange": {
+        "startLine": 69,
+        "endLine": 69,
+        "startOffset": 15,
+        "endOffset": 44
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Use the opposite operator (\">=\") instead.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "pitfall"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9lv",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 89,
+      "hash": "6d7d038f71e3a22b921dff1ebd72cb0c",
+      "textRange": {
+        "startLine": 89,
+        "endLine": 89,
+        "startOffset": 15,
+        "endOffset": 62
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9lw",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 90,
+      "hash": "c8283e46306058293f5e1e309a0bfa8a",
+      "textRange": {
+        "startLine": 90,
+        "endLine": 90,
+        "startOffset": 15,
+        "endOffset": 61
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9lx",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 101,
+      "hash": "a15309b474351a71c54b38631bbbfee9",
+      "textRange": {
+        "startLine": 101,
+        "endLine": 101,
+        "startOffset": 15,
+        "endOffset": 56
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl901TiLYW-eKL9ly",
+      "rule": "python:S1244",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 102,
+      "hash": "8419af471e67683415de548db6290efd",
+      "textRange": {
+        "startLine": 102,
+        "endLine": 102,
+        "startOffset": 15,
+        "endOffset": 58
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Do not perform equality checks with floating point values.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "data-science",
+        "numpy",
+        "pytorch",
+        "suspicious"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "BUG",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90gTiLYW-eKL9lj",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/conftest.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 115,
+      "hash": "b4ba7c4005f60ef0ea361c1ab2f49f1e",
+      "textRange": {
+        "startLine": 115,
+        "endLine": 115,
+        "startOffset": 8,
+        "endOffset": 27
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "VULNERABILITY",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90gTiLYW-eKL9lk",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/conftest.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 122,
+      "hash": "d723bbb345a454c2ec74da83a91d5263",
+      "textRange": {
+        "startLine": 122,
+        "endLine": 122,
+        "startOffset": 8,
+        "endOffset": 27
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "VULNERABILITY",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90XTiLYW-eKL9li",
+      "rule": "python:S1481",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_authorization_service.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 112,
+      "hash": "aad46268352ee78aeb7cba68b71bf032",
+      "textRange": {
+        "startLine": 112,
+        "endLine": 112,
+        "startOffset": 12,
+        "endOffset": 13
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Replace the unused loop index \"i\" with \"_\".",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "unused"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl9xkTiLYW-eKL9lf",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_user_service.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 35,
+      "hash": "072b7b8e489d3b7e611de55c82c766a8",
+      "textRange": {
+        "startLine": 35,
+        "endLine": 35,
+        "startOffset": 12,
+        "endOffset": 34
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "VULNERABILITY",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl9xkTiLYW-eKL9lg",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_user_service.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 47,
+      "hash": "cf8bca516b1217634b74689f698f5511",
+      "textRange": {
+        "startLine": 47,
+        "endLine": 47,
+        "startOffset": 16,
+        "endOffset": 34
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "VULNERABILITY",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl9xkTiLYW-eKL9lh",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_user_service.py",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 70,
+      "hash": "645c69bc58d156251b22adcf6c8af082",
+      "textRange": {
+        "startLine": 70,
+        "endLine": 70,
+        "startOffset": 46,
+        "endOffset": 67
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "VULNERABILITY",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9ll",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 70,
+      "hash": "5a8df8815bcc92597639d6d8de958aef",
+      "textRange": {
+        "startLine": 70,
+        "endLine": 70,
+        "startOffset": 24,
+        "endOffset": 30
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `global`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9lm",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 73,
+      "hash": "eb244c8c23f75fcb3a9aa292f48c1ee8",
+      "textRange": {
+        "startLine": 73,
+        "endLine": 73,
+        "startOffset": 4,
+        "endOffset": 10
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `global`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9ln",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 77,
+      "hash": "567038ff3348ae0b9a8d32cb61ffce29",
+      "textRange": {
+        "startLine": 77,
+        "endLine": 77,
+        "startOffset": 4,
+        "endOffset": 10
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `global`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9lo",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 158,
+      "hash": "78344d3362339192fce3edfef5192984",
+      "textRange": {
+        "startLine": 158,
+        "endLine": 158,
+        "startOffset": 57,
+        "endOffset": 63
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `window`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9lp",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 159,
+      "hash": "a055216190a0667b9a76838b758294f2",
+      "textRange": {
+        "startLine": 159,
+        "endLine": 159,
+        "startOffset": 12,
+        "endOffset": 18
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `window`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9lq",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 160,
+      "hash": "09739f1936a80b795f6e5c492bfabb87",
+      "textRange": {
+        "startLine": 160,
+        "endLine": 160,
+        "startOffset": 4,
+        "endOffset": 10
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `window`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    },
+    {
+      "key": "AZ0pl90rTiLYW-eKL9lr",
+      "rule": "typescript:S7764",
+      "severity": "MINOR",
+      "component": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "project": "TrieDatum-Inc_MainframeConversion",
+      "line": 172,
+      "hash": "b135eeb5b9c4ee07de3bb83f0e4af6a6",
+      "textRange": {
+        "startLine": 172,
+        "endLine": 172,
+        "startOffset": 28,
+        "endOffset": 34
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Prefer `globalThis` over `window`.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+      "tags": [
+        "es2020",
+        "portability"
+      ],
+      "creationDate": "2026-03-04T04:19:03+0000",
+      "updateDate": "2026-03-26T10:00:56+0000",
+      "type": "CODE_SMELL",
+      "organization": "triedatum-inc",
+      "pullRequest": "10",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "MainframeConversion",
+      "internalTags": []
+    }
+  ],
+  "components": [
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_authorization_service.py",
+      "uuid": "AZ0pl9fFTiLYW-eKL9jd",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_authorization_service.py",
+      "longName": "carddemo-fastapi/tests/test_authorization_service.py",
+      "path": "carddemo-fastapi/tests/test_authorization_service.py",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion",
+      "uuid": "AZ0plyWG_vzxr3Ipo4LC",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "MainframeConversion",
+      "longName": "MainframeConversion",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "uuid": "AZ0pl9fGTiLYW-eKL9k_",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_cbact04c_logic.py",
+      "longName": "carddemo-batch/tests/test_cbact04c_logic.py",
+      "path": "carddemo-batch/tests/test_cbact04c_logic.py",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/test_user_service.py",
+      "uuid": "AZ0pl9fFTiLYW-eKL9jZ",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_user_service.py",
+      "longName": "carddemo-fastapi/tests/test_user_service.py",
+      "path": "carddemo-fastapi/tests/test_user_service.py",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "uuid": "AZ0pl9fGTiLYW-eKL9k-",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_cbtrn02c_logic.py",
+      "longName": "carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "path": "carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/tests/conftest.py",
+      "uuid": "AZ0pl9fFTiLYW-eKL9ji",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "conftest.py",
+      "longName": "carddemo-fastapi/tests/conftest.py",
+      "path": "carddemo-fastapi/tests/conftest.py",
+      "pullRequest": "10"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-ui/__tests__/api.test.ts",
+      "uuid": "AZ0pl9fGTiLYW-eKL9kz",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "api.test.ts",
+      "longName": "carddemo-ui/__tests__/api.test.ts",
+      "path": "carddemo-ui/__tests__/api.test.ts",
+      "pullRequest": "10"
+    }
+  ],
+  "organizations": [
+    {
+      "key": "triedatum-inc",
+      "name": "TrieDatum-Inc"
+    }
+  ],
   "facets": []
 }
