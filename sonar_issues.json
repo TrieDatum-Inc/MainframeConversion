@@ -11,7 +11,7 @@
   "debtTotal": 1633,
   "issues": [
     {
-      "key": "AZ0pnkzHM7VHBcxZ-1K9",
+      "key": "AZ0pqJ9kwNvxBfmgyn3w",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbact04c_interest_calculator.py",
@@ -66,7 +66,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -80,7 +80,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzHM7VHBcxZ-1K-",
+      "key": "AZ0pqJ9kwNvxBfmgyn3x",
       "rule": "pythonenterprise:S7181",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbact04c_interest_calculator.py",
@@ -108,7 +108,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CONVENTIONAL",
       "cleanCodeAttributeCategory": "CONSISTENT",
       "impacts": [
@@ -122,7 +122,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyvM7VHBcxZ-1Kt",
+      "key": "AZ0pqJ9AwNvxBfmgyn3g",
       "rule": "python:S3457",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbstm03a_account_statement.py",
@@ -148,7 +148,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -162,7 +162,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyvM7VHBcxZ-1Ku",
+      "key": "AZ0pqJ9AwNvxBfmgyn3h",
       "rule": "python:S3776",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbstm03a_account_statement.py",
@@ -525,7 +525,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "FOCUSED",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -539,7 +539,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky2M7VHBcxZ-1Kx",
+      "key": "AZ0pqJ9OwNvxBfmgyn3k",
       "rule": "python:S3776",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
@@ -930,7 +930,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "FOCUSED",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -944,7 +944,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky2M7VHBcxZ-1Ky",
+      "key": "AZ0pqJ9OwNvxBfmgyn3l",
       "rule": "pythonenterprise:S7189",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
@@ -986,7 +986,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "EFFICIENT",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -1000,7 +1000,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky2M7VHBcxZ-1Kz",
+      "key": "AZ0pqJ9OwNvxBfmgyn3m",
       "rule": "pythonenterprise:S7189",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
@@ -1042,7 +1042,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "EFFICIENT",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -1056,7 +1056,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky2M7VHBcxZ-1K0",
+      "key": "AZ0pqJ9OwNvxBfmgyn3n",
       "rule": "python:S7494",
       "severity": "MINOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
@@ -1080,7 +1080,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CONVENTIONAL",
       "cleanCodeAttributeCategory": "CONSISTENT",
       "impacts": [
@@ -1094,7 +1094,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky2M7VHBcxZ-1K1",
+      "key": "AZ0pqJ9OwNvxBfmgyn3o",
       "rule": "python:S7494",
       "severity": "MINOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
@@ -1118,7 +1118,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CONVENTIONAL",
       "cleanCodeAttributeCategory": "CONSISTENT",
       "impacts": [
@@ -1132,7 +1132,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K5",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3s",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1188,7 +1188,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1202,7 +1202,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K2",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3p",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1258,7 +1258,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1272,7 +1272,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K3",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3q",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1328,7 +1328,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1342,7 +1342,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K6",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3t",
       "rule": "python:S1481",
       "severity": "MINOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1369,7 +1369,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -1383,7 +1383,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K7",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3u",
       "rule": "python:S3457",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1410,7 +1410,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -1424,7 +1424,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K4",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3r",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1522,7 +1522,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1536,7 +1536,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnky_M7VHBcxZ-1K8",
+      "key": "AZ0pqJ9ZwNvxBfmgyn3v",
       "rule": "python:S3457",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
@@ -1563,7 +1563,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -1577,7 +1577,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzOM7VHBcxZ-1K_",
+      "key": "AZ0pqJ9uwNvxBfmgyn3y",
       "rule": "python:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
@@ -1632,7 +1632,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1646,7 +1646,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzdM7VHBcxZ-1LD",
+      "key": "AZ0pqJ-AwNvxBfmgyn32",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/create_delta_tables.sql",
@@ -1702,7 +1702,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1716,7 +1716,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LL",
+      "key": "AZ0pqJ-LwNvxBfmgyn3-",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -1841,7 +1841,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1855,7 +1855,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LU",
+      "key": "AZ0pqJ-LwNvxBfmgyn4H",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -1966,7 +1966,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -1980,7 +1980,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LW",
+      "key": "AZ0pqJ-LwNvxBfmgyn4J",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2049,7 +2049,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2063,7 +2063,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LE",
+      "key": "AZ0pqJ-KwNvxBfmgyn33",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2146,7 +2146,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2160,7 +2160,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LN",
+      "key": "AZ0pqJ-LwNvxBfmgyn4A",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2271,7 +2271,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2285,7 +2285,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LF",
+      "key": "AZ0pqJ-LwNvxBfmgyn34",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2354,7 +2354,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2368,7 +2368,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LG",
+      "key": "AZ0pqJ-LwNvxBfmgyn35",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2465,7 +2465,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2479,7 +2479,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LK",
+      "key": "AZ0pqJ-LwNvxBfmgyn39",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2548,7 +2548,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2562,7 +2562,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LQ",
+      "key": "AZ0pqJ-LwNvxBfmgyn4D",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2673,7 +2673,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2687,7 +2687,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LP",
+      "key": "AZ0pqJ-LwNvxBfmgyn4C",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2742,7 +2742,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2756,7 +2756,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LV",
+      "key": "AZ0pqJ-LwNvxBfmgyn4I",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2825,7 +2825,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2839,7 +2839,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LO",
+      "key": "AZ0pqJ-LwNvxBfmgyn4B",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2894,7 +2894,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2908,7 +2908,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LJ",
+      "key": "AZ0pqJ-LwNvxBfmgyn38",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -2963,7 +2963,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -2977,7 +2977,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LI",
+      "key": "AZ0pqJ-LwNvxBfmgyn37",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3060,7 +3060,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3074,7 +3074,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LS",
+      "key": "AZ0pqJ-LwNvxBfmgyn4F",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3143,7 +3143,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3157,7 +3157,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LH",
+      "key": "AZ0pqJ-LwNvxBfmgyn36",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3240,7 +3240,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3254,7 +3254,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LR",
+      "key": "AZ0pqJ-LwNvxBfmgyn4E",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3309,7 +3309,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3323,7 +3323,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LM",
+      "key": "AZ0pqJ-LwNvxBfmgyn3_",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3392,7 +3392,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3406,7 +3406,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzmM7VHBcxZ-1LT",
+      "key": "AZ0pqJ-LwNvxBfmgyn4G",
       "rule": "plsql:S1192",
       "severity": "CRITICAL",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
@@ -3475,7 +3475,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "DISTINCT",
       "cleanCodeAttributeCategory": "ADAPTABLE",
       "impacts": [
@@ -3489,7 +3489,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Kn",
+      "key": "AZ0pqJ82wNvxBfmgyn3a",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3518,7 +3518,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3532,7 +3532,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Ko",
+      "key": "AZ0pqJ82wNvxBfmgyn3b",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3561,7 +3561,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3575,7 +3575,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Kp",
+      "key": "AZ0pqJ82wNvxBfmgyn3c",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3604,7 +3604,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3618,7 +3618,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Kq",
+      "key": "AZ0pqJ82wNvxBfmgyn3d",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3647,7 +3647,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3661,7 +3661,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Kr",
+      "key": "AZ0pqJ82wNvxBfmgyn3e",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3690,7 +3690,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3704,7 +3704,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyiM7VHBcxZ-1Ks",
+      "key": "AZ0pqJ82wNvxBfmgyn3f",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
@@ -3733,7 +3733,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3747,7 +3747,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Kg",
+      "key": "AZ0pqJ8swNvxBfmgyn3T",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3776,7 +3776,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3790,7 +3790,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Kh",
+      "key": "AZ0pqJ8swNvxBfmgyn3U",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3819,7 +3819,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3833,7 +3833,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Ki",
+      "key": "AZ0pqJ8swNvxBfmgyn3V",
       "rule": "python:S1940",
       "severity": "MINOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3859,7 +3859,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CONVENTIONAL",
       "cleanCodeAttributeCategory": "CONSISTENT",
       "impacts": [
@@ -3873,7 +3873,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Kj",
+      "key": "AZ0pqJ8swNvxBfmgyn3W",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3902,7 +3902,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3916,7 +3916,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Kk",
+      "key": "AZ0pqJ8swNvxBfmgyn3X",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3945,7 +3945,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -3959,7 +3959,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Kl",
+      "key": "AZ0pqJ8swNvxBfmgyn3Y",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -3988,7 +3988,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4002,7 +4002,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkyWM7VHBcxZ-1Km",
+      "key": "AZ0pqJ8swNvxBfmgyn3Z",
       "rule": "python:S1244",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
@@ -4031,7 +4031,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "BUG",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "LOGICAL",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4045,7 +4045,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkzVM7VHBcxZ-1LC",
+      "key": "AZ0pqJ93wNvxBfmgyn31",
       "rule": "python:S1172",
       "severity": "MAJOR",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-batch/utils/spark_utils.py",
@@ -4071,7 +4071,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4085,7 +4085,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkvBM7VHBcxZ-1Ir",
+      "key": "AZ0pqJ4rwNvxBfmgyn1e",
       "rule": "secrets:S6697",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/config.py",
@@ -4112,7 +4112,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "VULNERABILITY",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "TRUSTWORTHY",
       "cleanCodeAttributeCategory": "RESPONSIBLE",
       "impacts": [
@@ -4126,7 +4126,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Hp",
+      "key": "AZ0pqJ2swNvxBfmgyn0c",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4155,7 +4155,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4169,7 +4169,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Hq",
+      "key": "AZ0pqJ2swNvxBfmgyn0d",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4198,7 +4198,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4212,7 +4212,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Hr",
+      "key": "AZ0pqJ2swNvxBfmgyn0e",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4241,7 +4241,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4255,7 +4255,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Hs",
+      "key": "AZ0pqJ2swNvxBfmgyn0f",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4284,7 +4284,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4298,7 +4298,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Ht",
+      "key": "AZ0pqJ2swNvxBfmgyn0g",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4326,7 +4326,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4340,7 +4340,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkteM7VHBcxZ-1Hu",
+      "key": "AZ0pqJ2swNvxBfmgyn0h",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
@@ -4368,7 +4368,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4382,7 +4382,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktYM7VHBcxZ-1Ho",
+      "key": "AZ0pqJ2hwNvxBfmgyn0b",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/auth.py",
@@ -4410,7 +4410,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4424,7 +4424,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1Hw",
+      "key": "AZ0pqJ2_wNvxBfmgyn0j",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4452,7 +4452,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4466,7 +4466,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1Hx",
+      "key": "AZ0pqJ2_wNvxBfmgyn0k",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4494,7 +4494,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4508,7 +4508,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1Hy",
+      "key": "AZ0pqJ2_wNvxBfmgyn0l",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4536,7 +4536,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4550,7 +4550,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1Hz",
+      "key": "AZ0pqJ2_wNvxBfmgyn0m",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4578,7 +4578,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4592,7 +4592,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H0",
+      "key": "AZ0pqJ2_wNvxBfmgyn0n",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4620,7 +4620,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4634,7 +4634,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H1",
+      "key": "AZ0pqJ2_wNvxBfmgyn0o",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4662,7 +4662,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4676,7 +4676,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H2",
+      "key": "AZ0pqJ2_wNvxBfmgyn0p",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4704,7 +4704,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4718,7 +4718,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H3",
+      "key": "AZ0pqJ2_wNvxBfmgyn0q",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4746,7 +4746,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4760,7 +4760,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H4",
+      "key": "AZ0pqJ2_wNvxBfmgyn0r",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4788,7 +4788,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4802,7 +4802,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktsM7VHBcxZ-1H5",
+      "key": "AZ0pqJ2_wNvxBfmgyn0s",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
@@ -4830,7 +4830,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4844,7 +4844,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktzM7VHBcxZ-1H6",
+      "key": "AZ0pqJ3IwNvxBfmgyn0t",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/bill_payment.py",
@@ -4872,7 +4872,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4886,7 +4886,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktzM7VHBcxZ-1H7",
+      "key": "AZ0pqJ3IwNvxBfmgyn0u",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/bill_payment.py",
@@ -4914,7 +4914,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4928,7 +4928,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Ha",
+      "key": "AZ0pqJ14wNvxBfmgyn0N",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -4957,7 +4957,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -4971,7 +4971,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hb",
+      "key": "AZ0pqJ14wNvxBfmgyn0O",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5000,7 +5000,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5014,7 +5014,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hc",
+      "key": "AZ0pqJ14wNvxBfmgyn0P",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5042,7 +5042,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5056,7 +5056,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hd",
+      "key": "AZ0pqJ14wNvxBfmgyn0Q",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5084,7 +5084,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5098,7 +5098,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1He",
+      "key": "AZ0pqJ14wNvxBfmgyn0R",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5126,7 +5126,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5140,7 +5140,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hf",
+      "key": "AZ0pqJ14wNvxBfmgyn0S",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5168,7 +5168,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5182,7 +5182,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hg",
+      "key": "AZ0pqJ14wNvxBfmgyn0T",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5211,7 +5211,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5225,7 +5225,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hh",
+      "key": "AZ0pqJ14wNvxBfmgyn0U",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5254,7 +5254,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5268,7 +5268,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hi",
+      "key": "AZ0pqJ14wNvxBfmgyn0V",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5296,7 +5296,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5310,7 +5310,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hj",
+      "key": "AZ0pqJ14wNvxBfmgyn0W",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5338,7 +5338,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5352,7 +5352,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hk",
+      "key": "AZ0pqJ14wNvxBfmgyn0X",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5381,7 +5381,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5395,7 +5395,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hl",
+      "key": "AZ0pqJ14wNvxBfmgyn0Y",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5424,7 +5424,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5438,7 +5438,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hm",
+      "key": "AZ0pqJ14wNvxBfmgyn0Z",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5466,7 +5466,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5480,7 +5480,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnknMM7VHBcxZ-1Hn",
+      "key": "AZ0pqJ14wNvxBfmgyn0a",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
@@ -5508,7 +5508,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5522,7 +5522,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnktlM7VHBcxZ-1Hv",
+      "key": "AZ0pqJ22wNvxBfmgyn0i",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/reports.py",
@@ -5550,7 +5550,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5564,7 +5564,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1IV",
+      "key": "AZ0pqJ3twNvxBfmgyn1I",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5592,7 +5592,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5606,7 +5606,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1IW",
+      "key": "AZ0pqJ3twNvxBfmgyn1J",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5634,7 +5634,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5648,7 +5648,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1IX",
+      "key": "AZ0pqJ3twNvxBfmgyn1K",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5676,7 +5676,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5690,7 +5690,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1IY",
+      "key": "AZ0pqJ3twNvxBfmgyn1L",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5718,7 +5718,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5732,7 +5732,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1IZ",
+      "key": "AZ0pqJ3twNvxBfmgyn1M",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5760,7 +5760,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5774,7 +5774,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ia",
+      "key": "AZ0pqJ3twNvxBfmgyn1N",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5802,7 +5802,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5816,7 +5816,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ib",
+      "key": "AZ0pqJ3twNvxBfmgyn1O",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5844,7 +5844,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5858,7 +5858,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ic",
+      "key": "AZ0pqJ3twNvxBfmgyn1P",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5886,7 +5886,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5900,7 +5900,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Id",
+      "key": "AZ0pqJ3twNvxBfmgyn1Q",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5928,7 +5928,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5942,7 +5942,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ie",
+      "key": "AZ0pqJ3twNvxBfmgyn1R",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -5970,7 +5970,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -5984,7 +5984,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1If",
+      "key": "AZ0pqJ3twNvxBfmgyn1S",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -6012,7 +6012,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -6026,7 +6026,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ig",
+      "key": "AZ0pqJ3twNvxBfmgyn1T",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -6054,7 +6054,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -6068,7 +6068,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ih",
+      "key": "AZ0pqJ3twNvxBfmgyn1U",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -6096,7 +6096,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -6110,7 +6110,7 @@
       "internalTags": []
     },
     {
-      "key": "AZ0pnkuGM7VHBcxZ-1Ii",
+      "key": "AZ0pqJ3twNvxBfmgyn1V",
       "rule": "python:S8410",
       "severity": "BLOCKER",
       "component": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
@@ -6138,7 +6138,7 @@
       "updateDate": "2026-03-26T10:08:03+0000",
       "type": "CODE_SMELL",
       "organization": "triedatum-inc",
-      "pullRequest": "11",
+      "pullRequest": "12",
       "cleanCodeAttribute": "CLEAR",
       "cleanCodeAttributeCategory": "INTENTIONAL",
       "impacts": [
@@ -6155,211 +6155,211 @@
   "components": [
     {
       "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/config.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1FI",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "config.py",
-      "longName": "carddemo-fastapi/app/config.py",
-      "path": "carddemo-fastapi/app/config.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HK",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "seed_sample_data.sql",
-      "longName": "carddemo-batch/setup/seed_sample_data.sql",
-      "path": "carddemo-batch/setup/seed_sample_data.sql",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/create_delta_tables.sql",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HJ",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "create_delta_tables.sql",
-      "longName": "carddemo-batch/setup/create_delta_tables.sql",
-      "path": "carddemo-batch/setup/create_delta_tables.sql",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1G6",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "test_cbact04c_logic.py",
-      "longName": "carddemo-batch/tests/test_cbact04c_logic.py",
-      "path": "carddemo-batch/tests/test_cbact04c_logic.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/bill_payment.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1E1",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "bill_payment.py",
-      "longName": "carddemo-fastapi/app/routers/bill_payment.py",
-      "path": "carddemo-fastapi/app/routers/bill_payment.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1E0",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "authorizations.py",
-      "longName": "carddemo-fastapi/app/routers/authorizations.py",
-      "path": "carddemo-fastapi/app/routers/authorizations.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1G5",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "test_cbtrn02c_logic.py",
-      "longName": "carddemo-batch/tests/test_cbtrn02c_logic.py",
-      "path": "carddemo-batch/tests/test_cbtrn02c_logic.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1Ev",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "cards.py",
-      "longName": "carddemo-fastapi/app/routers/cards.py",
-      "path": "carddemo-fastapi/app/routers/cards.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
       "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/transaction_types.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1E4",
+      "uuid": "AZ0pqJi_wNvxBfmgynxr",
       "enabled": true,
       "qualifier": "FIL",
       "name": "transaction_types.py",
       "longName": "carddemo-fastapi/app/routers/transaction_types.py",
       "path": "carddemo-fastapi/app/routers/transaction_types.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/reports.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1Ez",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "reports.py",
-      "longName": "carddemo-fastapi/app/routers/reports.py",
-      "path": "carddemo-fastapi/app/routers/reports.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1Ex",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "accounts.py",
-      "longName": "carddemo-fastapi/app/routers/accounts.py",
-      "path": "carddemo-fastapi/app/routers/accounts.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/auth.py",
-      "uuid": "AZ0pnkWLM7VHBcxZ-1Ew",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "auth.py",
-      "longName": "carddemo-fastapi/app/routers/auth.py",
-      "path": "carddemo-fastapi/app/routers/auth.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion",
-      "uuid": "AZ0pnaHWJ9DLoLsr7rz1",
-      "enabled": true,
-      "qualifier": "TRK",
-      "name": "MainframeConversion",
-      "longName": "MainframeConversion",
-      "pullRequest": "11"
+      "pullRequest": "12"
     },
     {
       "organization": "triedatum-inc",
       "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/utils/spark_utils.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HH",
+      "uuid": "AZ0pqJjAwNvxBfmgynz6",
       "enabled": true,
       "qualifier": "FIL",
       "name": "spark_utils.py",
       "longName": "carddemo-batch/utils/spark_utils.py",
       "path": "carddemo-batch/utils/spark_utils.py",
-      "pullRequest": "11"
+      "pullRequest": "12"
     },
     {
       "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HE",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/create_delta_tables.sql",
+      "uuid": "AZ0pqJjAwNvxBfmgynz8",
       "enabled": true,
       "qualifier": "FIL",
-      "name": "cbtrn03c_daily_transaction_report.py",
-      "longName": "carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
-      "path": "carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
-      "pullRequest": "11"
+      "name": "create_delta_tables.sql",
+      "longName": "carddemo-batch/setup/create_delta_tables.sql",
+      "path": "carddemo-batch/setup/create_delta_tables.sql",
+      "pullRequest": "12"
     },
     {
       "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HC",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/authorizations.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxn",
       "enabled": true,
       "qualifier": "FIL",
-      "name": "cbtrn02c_daily_transaction_posting_rec.py",
-      "longName": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
-      "path": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
-      "pullRequest": "11"
-    },
-    {
-      "organization": "triedatum-inc",
-      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbact04c_interest_calculator.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HD",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "cbact04c_interest_calculator.py",
-      "longName": "carddemo-batch/jobs/cbact04c_interest_calculator.py",
-      "path": "carddemo-batch/jobs/cbact04c_interest_calculator.py",
-      "pullRequest": "11"
+      "name": "authorizations.py",
+      "longName": "carddemo-fastapi/app/routers/authorizations.py",
+      "path": "carddemo-fastapi/app/routers/authorizations.py",
+      "pullRequest": "12"
     },
     {
       "organization": "triedatum-inc",
       "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbstm03a_account_statement.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HA",
+      "uuid": "AZ0pqJjAwNvxBfmgynzz",
       "enabled": true,
       "qualifier": "FIL",
       "name": "cbstm03a_account_statement.py",
       "longName": "carddemo-batch/jobs/cbstm03a_account_statement.py",
       "path": "carddemo-batch/jobs/cbstm03a_account_statement.py",
-      "pullRequest": "11"
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/bill_payment.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxo",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "bill_payment.py",
+      "longName": "carddemo-fastapi/app/routers/bill_payment.py",
+      "path": "carddemo-fastapi/app/routers/bill_payment.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/setup/seed_sample_data.sql",
+      "uuid": "AZ0pqJjAwNvxBfmgynz9",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "seed_sample_data.sql",
+      "longName": "carddemo-batch/setup/seed_sample_data.sql",
+      "path": "carddemo-batch/setup/seed_sample_data.sql",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/reports.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxm",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "reports.py",
+      "longName": "carddemo-fastapi/app/routers/reports.py",
+      "path": "carddemo-fastapi/app/routers/reports.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/auth.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxj",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "auth.py",
+      "longName": "carddemo-fastapi/app/routers/auth.py",
+      "path": "carddemo-fastapi/app/routers/auth.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/accounts.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxk",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "accounts.py",
+      "longName": "carddemo-fastapi/app/routers/accounts.py",
+      "path": "carddemo-fastapi/app/routers/accounts.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/routers/cards.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynxi",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "cards.py",
+      "longName": "carddemo-fastapi/app/routers/cards.py",
+      "path": "carddemo-fastapi/app/routers/cards.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion",
+      "uuid": "AZ0pp-J1J9DLoLsr7sCv",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "MainframeConversion",
+      "longName": "MainframeConversion",
+      "pullRequest": "12"
     },
     {
       "organization": "triedatum-inc",
       "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
-      "uuid": "AZ0pnkWMM7VHBcxZ-1HB",
+      "uuid": "AZ0pqJjAwNvxBfmgynz0",
       "enabled": true,
       "qualifier": "FIL",
       "name": "cbtrn02c_daily_transaction_posting.py",
       "longName": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
       "path": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting.py",
-      "pullRequest": "11"
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbact04c_interest_calculator.py",
+      "uuid": "AZ0pqJjAwNvxBfmgynz2",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "cbact04c_interest_calculator.py",
+      "longName": "carddemo-batch/jobs/cbact04c_interest_calculator.py",
+      "path": "carddemo-batch/jobs/cbact04c_interest_calculator.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-fastapi/app/config.py",
+      "uuid": "AZ0pqJi_wNvxBfmgynx7",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "config.py",
+      "longName": "carddemo-fastapi/app/config.py",
+      "path": "carddemo-fastapi/app/config.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
+      "uuid": "AZ0pqJjAwNvxBfmgynz1",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "cbtrn02c_daily_transaction_posting_rec.py",
+      "longName": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
+      "path": "carddemo-batch/jobs/cbtrn02c_daily_transaction_posting_rec.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbact04c_logic.py",
+      "uuid": "AZ0pqJjAwNvxBfmgynzt",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_cbact04c_logic.py",
+      "longName": "carddemo-batch/tests/test_cbact04c_logic.py",
+      "path": "carddemo-batch/tests/test_cbact04c_logic.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
+      "uuid": "AZ0pqJjAwNvxBfmgynz3",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "cbtrn03c_daily_transaction_report.py",
+      "longName": "carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
+      "path": "carddemo-batch/jobs/cbtrn03c_daily_transaction_report.py",
+      "pullRequest": "12"
+    },
+    {
+      "organization": "triedatum-inc",
+      "key": "TrieDatum-Inc_MainframeConversion:carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "uuid": "AZ0pqJjAwNvxBfmgynzs",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_cbtrn02c_logic.py",
+      "longName": "carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "path": "carddemo-batch/tests/test_cbtrn02c_logic.py",
+      "pullRequest": "12"
     }
   ],
   "organizations": [
