@@ -4,7 +4,7 @@ on:
     branches:
       - main
     path-ignores:
-      - sonar_report.json
+      - sonar_issues.json
   pull_request:
     types: [opened, synchronize, reopened]
 permissions:
@@ -37,7 +37,7 @@ jobs:
           #path: sonar_issues.json
       - name: Add sonar report to repository
         env: 
-          BRANCH_NAME: ${{ github.head_ref }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           git config  user.name "mridulgohain-triedatum"
           git config  user.email "mridul.gohain@triedatum.com"
